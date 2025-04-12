@@ -21,7 +21,7 @@ const Terms = () => {
   return (
     <>
       <Header />
-      <div className="container w-50 ms-5 mt-5">
+      <div className="container mx-0 px-4 px-md-5 mt-5" style={{ maxWidth: "800px" }}>
         <Title>SideQuest</Title>
         <Content>
           Welcome to SideQuest! By accessing or using the app, you agree to be bound by the terms below. If you do not agree, please do not use SideQuest.
