@@ -24,7 +24,12 @@ const Footer = () => {
   return (
     <div className="mt-5 text-secondary text-center py-4 px-5" style={{ fontSize: "0.8rem", borderTop: "1px solid #334155" }}>
       <p>&copy; 2025 SideQuest, All Rights Reserved</p>
-      <p className="mb-0">Remember: adventure responsibly and respect your surroundings</p>
+      <p>Remember: adventure responsibly and respect your surroundings</p>
+      <p className="mb-0">
+        <a href="./" className="mt-0 text-decoration-none text-secondary" style={{ fontSize: "0.75rem" }}>Home</a>
+        { " | " }
+        <a href="./terms" className="mt-0 text-decoration-none text-secondary" style={{ fontSize: "0.75rem" }}>Terms of Use</a>
+      </p>
     </div>
   );
 }

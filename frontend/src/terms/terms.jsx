@@ -22,7 +22,7 @@ const Terms = () => {
     <>
       <Header />
       <div className="container w-50 ms-5 mt-5">
-        <Title>Terms of Use</Title>
+        <Title>SideQuest</Title>
         <Content>
           Welcome to SideQuest! By accessing or using the app, you agree to be bound by the terms below. If you do not agree, please do not use SideQuest.
         </Content>
