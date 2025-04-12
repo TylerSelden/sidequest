@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/main.scss";
 
 import Home from "./home/home";
+import Terms from "./terms/terms";
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
@@ -23,6 +24,7 @@ export default function App() {
       ) : (
         <Routes>
           <Route path="/" element={ <Home /> }></Route>
+          <Route path="/terms" element={ <Terms /> }></Route>
         </Routes>
       )}
     </BrowserRouter>

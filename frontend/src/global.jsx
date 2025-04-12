@@ -20,4 +20,13 @@ const tagData = {
   "Miscellaneous": { color: "#0f6b7e", long: "Miscellaneous", icon: <FaDiceD6 /> }
 }
 
-export { tagData };
+const Footer = () => {
+  return (
+    <div className="mt-5 text-secondary text-center py-4 px-5" style={{ fontSize: "0.8rem", borderTop: "1px solid #334155" }}>
+      <p>&copy; 2025 SideQuest, All Rights Reserved</p>
+      <p className="mb-0">Remember: adventure responsibly and respect your surroundings</p>
+    </div>
+  );
+}
+
+export { tagData, Footer };

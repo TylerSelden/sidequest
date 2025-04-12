@@ -4,7 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./header";
 import Current from "./current";
 import Previous from "./previous";
-import Footer from "./footer";
+import { Footer } from "../global";
 
 const Home = () => {
   return (
