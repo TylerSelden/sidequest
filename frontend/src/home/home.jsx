@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./header";
 import Current from "./current";
 import Previous from "./previous";
+import Footer from "./footer";
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
         <Current />
         <Previous />
       </div>
+        <Footer />
     </>
   );
 }
