@@ -1,0 +1,85 @@
+$theme-colors: (
+  primary:   #22d3ee,
+  secondary: #97A2B5,
+  muted:     #1e293b,
+  dark:      #0f172a,
+  light:     #e2e8f0,
+  info:      #0ea5e9
+);
+
+$fs-sizes: (
+  1: 1rem,
+  2: 1.125rem,
+  3: 1.5rem,
+  4: 1.75rem,
+  5: 2rem,
+  6: 2.25rem,
+  7: 2.5rem,
+  8: 3rem,
+  9: 4.5rem
+);
+
+
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=VT323&display=swap');
+
+@each $key, $size in $fs-sizes {
+  .fs-#{$key} {
+    font-size: $size !important;
+  }
+}
+
+body {
+  background-color: #0f172a;
+  color: #e2e8f0;
+  font-family: "Space Mono", monospace;
+}
+
+.title-font { font-family: "VT323", monospace; }
+.neon { text-shadow: 0 0 10px rgba(14, 165, 233, 0.8); }
+.hyphen-wrap {
+  hyphens: auto;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+.btn {
+  transition: filter 0.3s ease, background-color 0.3s ease;
+  border: none;
+  &:hover {
+    filter: brightness(1.2);
+  }
+  &:active {
+    transition: none;
+    filter: brightness(0.9);
+  }
+}
+
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 0.8s ease-out forwards;
+}
+
+
+.quest-card {
+  transition: border-color 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease;
+
+  &:hover {
+    transform: translateY(-4px) !important;
+    border-color: #22d3ee !important;
+    box-shadow: 0 0 20px rgba(14, 165, 233, 0.8);
+  }
+}
