@@ -14,9 +14,9 @@ const Current = () => {
       </h2>
 
       <div className="mt-2 row row-cols-3 row-cols-md-1 g-3">
-        <QuestCard title="Test" description="This is a test" tag="Exploration"/>
-        <QuestCard title="Test" description="This is a test" tag="Exploration"/>
-        <QuestCard title="Test" description="This is a test" tag="Exploration"/>
+        <QuestCard tag="Puzzle" description="Find an odd symbol or message written in graffiti." />
+        <QuestCard tag="Creativity" description="Write a short poem about something you encounter today." />
+        <QuestCard tag="Nature" description="Spot a patch of wildflowers growing somewhere unusual." />
       </div>
     </div>
   );

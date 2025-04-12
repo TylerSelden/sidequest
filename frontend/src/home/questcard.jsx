@@ -15,7 +15,7 @@ const IconCircle = ({ tag }) => {
 }
 
 
-const QuestCard = ({ title, description, tag }) => {
+const QuestCard = ({ tag, description }) => {
   const color = tagData[tag].color;
   const long = tagData[tag].long;
   const [useAnimation, setUseAnimation] = useState(true);
@@ -32,13 +32,13 @@ const QuestCard = ({ title, description, tag }) => {
         <div className="d-flex align-items-start gap-3">
           <IconCircle tag={tag} />
           <div className="d-flex flex-column">
-            <h3 className="mt-2 h5 fw-bold mb-1">{ title }</h3>
+            <h3 className="mt-2 h5 fw-bold mb-1">{ tag }</h3>
             <p className="fs-1 text-secondary hyphen-wrap">{ description }</p>
           </div>
         </div>
         <div className="d-flex justify-content-between align-items-center">
           <p className="text-secondary fs-1 mb-0">{ long }</p>
-          <button className="btn rounded-pill px-3 btn-sm mb-0" style={{ backgroundColor: color }}>Start</button>
+          <button className="btn rounded-pill px-3 btn-sm mb-0 text-light" style={{ backgroundColor: color }}>Start</button>
         </div>
       </div>
     </div>
