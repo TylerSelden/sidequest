@@ -46,7 +46,7 @@ const Previous = () => {
           .map(([id, quest]) => {
           return (
             <QuestCard
-              key={ id }
+              key={ `${id}_${activeTag}` }
               quest={ questData.previous[id] }
             />
           )
