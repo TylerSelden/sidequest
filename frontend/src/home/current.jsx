@@ -2,6 +2,7 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import QuestCard from "./questcard";
+import { questData } from "../global";
 
 import { FaCalendarDay } from "react-icons/fa6";
 
@@ -14,9 +15,14 @@ const Current = () => {
       </h2>
 
       <div className="mt-2 row row-cols-3 row-cols-md-1 g-3">
-        <QuestCard tag="Puzzle" description="Find an odd symbol or message written in graffiti." />
-        <QuestCard tag="Creativity" description="Write a short poem about something you encounter today." />
-        <QuestCard tag="Nature" description="Spot a patch of wildflowers growing somewhere unusual." />
+        { Object.entries(questData.current).map(([id, quest]) => {
+          return (
+            <QuestCard
+              key={ id }
+              quest={ questData.current[id] }
+            />
+          )
+        })}
       </div>
     </div>
   );

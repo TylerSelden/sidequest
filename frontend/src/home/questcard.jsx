@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { tagData } from "../global";
+import { tagData, questData } from "../global";
 
 const IconCircle = ({ tag }) => {
   const color = tagData[tag].color;
@@ -15,9 +15,11 @@ const IconCircle = ({ tag }) => {
 }
 
 
-const QuestCard = ({ tag, description }) => {
-  const color = tagData[tag].color;
-  const long = tagData[tag].long;
+const QuestCard = ({ quest }) => {
+  let { tag, description } = quest;
+  const { color, long} = tagData[tag];
+
+  const [completed, setCompleted] = useState(quest.completed);
   const [useAnimation, setUseAnimation] = useState(true);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const QuestCard = ({ tag, description }) => {
     <div className="col-12 col-lg-4">
       <div className={`${useAnimation ? "fade-up" : ""} card quest-card border-1 rounded mx-auto bg-dark text-light p-3 h-100 justify-content-between`} style={{ borderColor: "#334155"}}>
         <div className="d-flex align-items-start gap-3">
-          <IconCircle tag={tag} />
+          <IconCircle tag={ tag } />
           <div className="d-flex flex-column">
             <h3 className="mt-2 h5 fw-bold mb-1">{ tag }</h3>
             <p className="fs-1 text-secondary hyphen-wrap">{ description }</p>
@@ -38,7 +40,21 @@ const QuestCard = ({ tag, description }) => {
         </div>
         <div className="d-flex justify-content-between align-items-center">
           <p className="text-secondary fs-1 mb-0">{ long }</p>
-          <button className="btn rounded-pill px-3 btn-sm mb-0 text-light" style={{ backgroundColor: color }}>Start</button>
+          {
+            !completed ? (
+              <button
+                className="btn rounded-pill px-3 btn-sm mb-0 text-light"
+                style={{ backgroundColor: color }}
+                onClick={() => {
+                  setCompleted(true);
+                }}
+              >
+                Finish
+              </button>
+            ) : (
+              <button className="btn rounded-pill px-3 btn-sm mb-0" disabled>Completed</button>
+            )
+          }
         </div>
       </div>
     </div>

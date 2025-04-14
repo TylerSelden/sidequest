@@ -54,6 +54,11 @@ body {
     transition: none;
     filter: brightness(0.9);
   }
+  &:disabled {
+    background-color: #1e293b !important;
+    color: #97a2b5 !important;
+    opacity: 1 !important;
+  }
 }
 
 
