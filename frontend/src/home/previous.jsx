@@ -28,6 +28,7 @@ const TagSelector = ({ activeTag, setActiveTag }) => {
 
 const Previous = () => {
   const [activeTag, setActiveTag] = useState("All Quests");
+  const [showCount, setShowCount] = useState(6);
 
   return (
     <div className="mt-5 w-100">
@@ -39,8 +40,10 @@ const Previous = () => {
       <TagSelector activeTag={ activeTag } setActiveTag={ setActiveTag} />
 
       <div className="mt-0 row row-cols-3 row-cols-md-1 g-3 justify-content-center">
-        { Object.entries(questData.previous).map(([id, quest]) => {
-          if (activeTag !== "All Quests" && quest.tag !== activeTag) return null;
+        { Object.entries(questData.previous)
+          .filter(([id, quest]) => activeTag === "All Quests" || quest.tag === activeTag)
+          .slice(0, showCount)
+          .map(([id, quest]) => {
           return (
             <QuestCard
               key={ id }
@@ -50,7 +53,14 @@ const Previous = () => {
         })}
 
         <div className="col-12 pt2 d-flex justify-content-center">
-          <button className="btn btn-primary btn-md px-5">Show more</button>
+          <button
+            className="btn btn-primary btn-md px-5"
+            onClick={() => {
+              setShowCount(showCount + 3);
+            }}
+          >
+            Show more
+          </button>
         </div>
       </div>
     </div>
