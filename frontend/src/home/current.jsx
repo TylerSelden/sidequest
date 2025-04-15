@@ -17,10 +17,7 @@ const Current = () => {
       <div className="mt-2 row row-cols-3 row-cols-md-1 g-3">
         { Object.entries(questData.current).map(([id, quest]) => {
           return (
-            <QuestCard
-              key={ id }
-              quest={ questData.current[id] }
-            />
+            <QuestCard key={ id } quest={ questData.current[id] } />
           )
         })}
       </div>

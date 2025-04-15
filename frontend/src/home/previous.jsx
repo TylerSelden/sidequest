@@ -26,6 +26,26 @@ const TagSelector = ({ activeTag, setActiveTag }) => {
   );
 }
 
+const filteredList = (activeTag) => {
+  return Object.entries(questData.previous)
+    .filter(([id, quest]) => activeTag === "All Quests" || quest.tag === activeTag);
+}
+
+// Function to display the previous quests
+const PreviousQuestCards = ({ activeTag, showCount }) => {
+  const filtered = filteredList(activeTag);
+
+  return filtered.length > 0 ? (
+    filtered.slice(0, showCount).map(([id, quest]) => (
+      <QuestCard key={ `${id}_${activeTag}` } quest={ quest } />
+    ))
+  ) : (
+    <div className="col-12 pt2 d-flex justify-content-center">
+      <h2 className="text-secondary fs-3 mt-4">No quests available</h2>
+    </div>
+  );
+}
+
 const Previous = () => {
   const [activeTag, setActiveTag] = useState("All Quests");
   const [showCount, setShowCount] = useState(6);
@@ -40,21 +60,12 @@ const Previous = () => {
       <TagSelector activeTag={ activeTag } setActiveTag={ setActiveTag} />
 
       <div className="mt-0 row row-cols-3 row-cols-md-1 g-3 justify-content-center">
-        { Object.entries(questData.previous)
-          .filter(([id, quest]) => activeTag === "All Quests" || quest.tag === activeTag)
-          .slice(0, showCount)
-          .map(([id, quest]) => {
-          return (
-            <QuestCard
-              key={ `${id}_${activeTag}` }
-              quest={ questData.previous[id] }
-            />
-          )
-        })}
+        <PreviousQuestCards activeTag={ activeTag } showCount={ showCount } />
 
         <div className="col-12 pt2 d-flex justify-content-center">
           <button
             className="btn btn-primary btn-md px-5"
+            style={{ display: (showCount < filteredList(activeTag).length) ? "block" : "none" }}
             onClick={() => {
               setShowCount(showCount + 3);
             }}

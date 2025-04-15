@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { tagData, questData } from "../global";
+import { tagData } from "../global";
 
 const IconCircle = ({ tag }) => {
   const color = tagData[tag].color;
