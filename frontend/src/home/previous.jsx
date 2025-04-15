@@ -15,7 +15,7 @@ const TagSelector = ({ activeTag, setActiveTag }) => {
             key={tag}
             className="btn text-light rounded-pill btn-md m-0 d-flex align-items-center gap-2"
             style={{ backgroundColor: activeTag === tag ? data.color : "#1e293b" }}
-            onClick={() => { setActiveTag(tag); console.log(data) }}
+            onClick={() => { setActiveTag(tag) }}
           >
             { tagData[tag].icon }
             {tag}
