@@ -6,6 +6,8 @@ import { FaMapMarkedAlt, FaLeaf, FaComments, FaPaintBrush, FaHiking, FaDiceD6 } 
 import { FaBinoculars, FaCameraRetro, FaTrophy } from "react-icons/fa6";
 import { HiPuzzlePiece } from "react-icons/hi2";
 
+import API from "./api";
+
 const tagData = {
   "All Quests": { color: "#0ea5e9", long: "All Quests", icon: <PiCastleTurretFill /> },
   "Exploration": { color: "#2563eb", long: "Exploration", icon: <FaMapMarkedAlt /> },
@@ -23,6 +25,7 @@ const tagData = {
 const Footer = () => {
   return (
     <div className="mt-5 text-secondary text-center py-4 px-5" style={{ fontSize: "0.8rem", borderTop: "1px solid #334155" }}>
+      <p className="fs-2 mb-4"><strong>Season { questData.season }:</strong> { questData.seasonName }</p>
       <p>&copy; 2025 SideQuest, All Rights Reserved</p>
       <p>Remember: adventure responsibly and respect your surroundings</p>
       <p className="mb-0">
@@ -101,4 +104,12 @@ let questData = {
   }
 };
 
-export { tagData, Footer, questData };
+function setQuestData(obj) {
+  questData = obj;
+  for (const id of API.questsCompleted) {
+    let _obj = (questData.current[id] || questData.previous[id]);
+    if (_obj) _obj.completed = true;
+  }
+}
+
+export { tagData, Footer, questData, setQuestData };

@@ -15,9 +15,9 @@ let { currentSeason, seasons, Quest, allQuests, questData, updateQuestData } = r
   *
   * GET    /quests                   - Get all quests in all seasons
   *
-  * PUT    /admin/season/:season     - Create new season
+  * POST   /admin/season/:season     - Create new season, overwrite if exists
   * PUT    /admin/quests/:season     - Completely overwrite season
-  * PUT    /admin/season/:season     - Set current season
+  * PATCH  /admin/season/:season     - Set current season
   * POST   /admin/quests/:season     - Create or replace quests
   * DELETE /admin/quests/:season/:id - Delete a single quest
   * DELETE /admin/season/:season     - Delete season
@@ -35,15 +35,20 @@ app.get("/quests", (req, res) => {
 });
 
 
-app.put("/admin/season/:season", auth, (req, res) => {
+app.post("/admin/season/:season", auth, (req, res) => {
   const { season } = req.params;
-  const { seasonName } = req.body;
+  const { quests, seasonName } = req.body;
   if (!checkExists(res, [season, seasonName])) return;
-  if (allQuests[season]) return res.status(400).json({ data: "Already Exists" });
-  if (season === currentSeason) return res.status(400).json({ data: "Cannot overwrite current season" });
 
   seasons[season] = seasonName;
   allQuests[season] = {};
+  if (quests) {
+    for (const quest of quests) {
+      quest.id = uuid();
+      allQuests[season][quest.id] = new Quest(quest);
+    }
+  }
+  updateQuestData();
 
   res.json({ data: "Success" });
 });
@@ -52,8 +57,9 @@ app.put("/admin/quests/:season", auth, (req, res) => {
   const { season } = req.params;
   const { quests, seasonName } = req.body;
   if (!checkExists(res, [season, quests, seasonName])) return;
-  if (!allQuests[season]) return res.status(404).json({ data: "Not Found" });
 
+  seasons[season] = seasonName;
+  allQuests[season] = {};
   for (const quest of quests) {
     quest.id = uuid();
     allQuests[season][quest.id] = new Quest(quest);
@@ -63,7 +69,7 @@ app.put("/admin/quests/:season", auth, (req, res) => {
   res.json({ data: "Success" });
 });
 
-app.put("/admin/season/:season", auth, (req, res) => {
+app.patch("/admin/season/:season", auth, (req, res) => {
   const { season } = req.params;
   if (!checkExists(res, [season])) return;
   if (!allQuests[season]) return res.status(404).json({ data: "Not Found" });
@@ -80,7 +86,10 @@ app.post("/admin/quests/:season", auth, (req, res) => {
   if (!checkExists(res, [season, quests])) return;
 
   if (!allQuests[season]) return res.status(404).json({ data: "Not Found" });
-  for (const quest of quests) allQuests[season][quest.id] = new Quest(quest);
+  for (const quest of quests) {
+    quest.id = uuid();
+    allQuests[season][quest.id] = new Quest(quest);
+  }
   updateQuestData();
 
   res.json({ data: "Success" });

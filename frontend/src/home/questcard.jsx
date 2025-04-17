@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import API from "../api";
 import { tagData } from "../global";
 
 const IconCircle = ({ tag }) => {
@@ -46,6 +47,7 @@ const QuestCard = ({ quest }) => {
                 className="btn rounded-pill px-3 btn-sm mb-0 text-light"
                 style={{ backgroundColor: color }}
                 onClick={() => {
+                  API.setQuestCompletion(quest.id, true);
                   setCompleted(true);
                 }}
               >

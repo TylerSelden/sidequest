@@ -3,15 +3,23 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/main.scss";
+import API from "./api";
 
 import Home from "./home/home";
 import Terms from "./terms/terms";
+import { setQuestData } from "./global";
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setLoaded(true);
+    async function load() {
+      const response = await API.getQuests();
+      setQuestData(response);
+
+      setLoaded(true);
+    }
+    load();
   }, []);
   return (
     <BrowserRouter>

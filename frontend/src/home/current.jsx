@@ -14,12 +14,18 @@ const Current = () => {
         Today's Quests
       </h2>
 
-      <div className="mt-2 row row-cols-3 row-cols-md-1 g-3">
-        { Object.entries(questData.current).map(([id, quest]) => {
-          return (
-            <QuestCard key={ id } quest={ questData.current[id] } />
-          )
-        })}
+      <div className="mt-2 row row-cols-3 row-cols-md-1 g-3 justify-content-center">
+        { Object.entries(questData.current).length === 0 ? (
+          <div className="col-12 pt2 d-flex justify-content-center fade-up">
+            <h2 className="text-secondary fs-3 mt-4">No quests available</h2>
+          </div>
+        ) : (
+           Object.entries(questData.current).map(([id, quest]) => {
+            return (
+              <QuestCard key={ id } quest={ questData.current[id] } />
+            )
+          })
+        )}
       </div>
     </div>
   );
