@@ -31,7 +31,6 @@ const filteredList = (activeTag) => {
     .filter(([id, quest]) => activeTag === "All Quests" || quest.tag === activeTag);
 }
 
-// Function to display the previous quests
 const PreviousQuestCards = ({ activeTag, showCount }) => {
   const filtered = filteredList(activeTag);
 
@@ -40,7 +39,7 @@ const PreviousQuestCards = ({ activeTag, showCount }) => {
       <QuestCard key={ `${id}_${activeTag}` } quest={ quest } />
     ))
   ) : (
-    <div className="col-12 pt2 d-flex justify-content-center">
+    <div className="col-12 pt2 d-flex justify-content-center fade-up">
       <h2 className="text-secondary fs-3 mt-4">No quests available</h2>
     </div>
   );

@@ -30,7 +30,7 @@ const QuestCard = ({ quest }) => {
 
   return (
     <div className="col-12 col-lg-4">
-      <div className={`${useAnimation ? "fade-up" : ""} card quest-card border-1 rounded mx-auto bg-dark text-light p-3 h-100 justify-content-between`} style={{ borderColor: "#334155"}}>
+      <div className={`${useAnimation ? "fade-up" : "hover-up"} card quest-card border-1 rounded mx-auto bg-dark text-light p-3 h-100 justify-content-between`} style={{ borderColor: "#334155"}}>
         <div className="d-flex align-items-start gap-3">
           <IconCircle tag={ tag } />
           <div className="d-flex flex-column">
