@@ -22,12 +22,30 @@ const QuestCard = ({ quest }) => {
 
   const [completed, setCompleted] = useState(quest.completed);
   const [useAnimation, setUseAnimation] = useState(true);
+  const [disableClick, setDisableClick] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
       setUseAnimation(false);
     }, 800);
   }, []);
+
+  let holdTimeout;
+
+  const handleHoldStart = (e) => {
+    e.target.innerText = "Hold to undo";
+    e.target.classList.add("undo");
+    holdTimeout = setTimeout(() => {
+      API.setQuestCompletion(quest.id, false);
+      setCompleted(false);
+      if (!e.type.startsWith("touch")) setDisableClick(true);
+    }, 3000);
+  };
+  const handleHoldEnd = (e) => {
+    clearTimeout(holdTimeout);
+    e.target.innerText = "Completed";
+    e.target.classList.remove("undo");
+  }
 
   return (
     <div className="col-12 col-lg-4">
@@ -47,6 +65,7 @@ const QuestCard = ({ quest }) => {
                 className="btn rounded-pill px-3 btn-sm mb-0 text-light"
                 style={{ backgroundColor: color }}
                 onClick={() => {
+                  if (disableClick) return setDisableClick(false);
                   API.setQuestCompletion(quest.id, true);
                   setCompleted(true);
                 }}
@@ -54,7 +73,17 @@ const QuestCard = ({ quest }) => {
                 Finish
               </button>
             ) : (
-              <button className="btn rounded-pill px-3 btn-sm mb-0" disabled>Completed</button>
+              <button
+                className="btn fake-disabled rounded-pill px-3 btn-sm mb-0"
+
+                onMouseDown={handleHoldStart}
+                onMouseUp={handleHoldEnd}
+                onMouseLeave={handleHoldEnd}
+                onTouchStart={handleHoldStart}
+                onTouchEnd={handleHoldEnd}
+              >
+                Completed
+              </button>
             )
           }
         </div>

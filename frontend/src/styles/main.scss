@@ -87,3 +87,43 @@ body {
   }
 }
 .hover-up:hover { transform: translateY(-4px) !important; }
+
+.fake-disabled {
+  background-color: #1e293b !important;
+  color: #97a2b5 !important;
+  filter: brightness(1) !important;
+  cursor: default !important;
+}
+
+
+.undo {
+  position: relative;
+  background-color: #ef4444 !important;
+  color: #fff !important;
+  overflow: hidden;
+}
+
+.undo::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #ef4444;
+  z-index: -1;
+  animation: drain 3s ease-out forwards;
+}
+
+@keyframes drain {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+
+.undo:hover {
+  background-color: #1e293b !important;
+}

@@ -23,6 +23,7 @@ const API = {
     localStorage.setItem("sidequest", JSON.stringify(arr));
   },
   questsCompleted: JSON.parse(localStorage.getItem("sidequest") || "[]"),
+  points: JSON.parse(localStorage.getItem("sidequest") || "[]").length * 10,
 
   getQuests: () => request("GET", "/quests")
 }
