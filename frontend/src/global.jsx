@@ -12,7 +12,7 @@ const callData = {
   "GET": { color: "#059669", long: "Retrieve Data", icon: <FaSearch /> },
   "POST": { color: "#4c1d95", long: "Create New Resource", icon: <FaPlus /> },
   "PUT": { color: "#0ea5e9", long: "Overwrite Resource", icon: <FaEdit /> },
-  "PATCH": { color: "#db2777", long: "Modify Resource", icon: <FaWrench /> },
+  "PATCH": { color: "#ca8a04", long: "Modify Resource", icon: <FaWrench /> },
   "DELETE": { color: "#dc2626", long: "Remove Resource", icon: <FaTrashAlt /> }
 }
 

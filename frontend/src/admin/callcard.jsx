@@ -15,7 +15,7 @@ const IconCircle = ({ color, icon }) => {
 const DataInput = ({ name, id, type, description, required }) => {
   return (
     <div className="d-flex flex-column col-12 col-md-11 mb-3">
-      <label htmlFor={ id } className="text-secondary mb-2">{ name }{ required ? '*' : '' } ({ type })</label>
+      <label htmlFor={ id } className="text-secondary mb-2">{ required ? '*' : '' }{ name } ({ type })</label>
       { type === "json" ? (
         <textarea
           type="text"
@@ -42,7 +42,7 @@ const CallCard = ({ call, data }) => {
 
   return (
     <div className="col-12">
-      <div className="hover-up card quest-card border-1 rounded mx-auto bg-dark text-light p-3 h-100 justify-content-between" style={{ borderColor: "#334155"}}>
+      <div className="hover-up card quest-card border-1 rounded mx-auto bg-dark text-light p-3 h-100 justify-content-between" style={{ borderColor: "#334155" }}>
         <div className="d-flex align-items-start gap-3">
           <IconCircle color={ color } icon={ icon } />
           <div className="d-flex flex-column">
@@ -51,22 +51,44 @@ const CallCard = ({ call, data }) => {
           </div>
         </div>
 
-        <div className="row gap-2 my-5 justify-content-center">
-          { Object.entries(params).map(([name, data]) => {
-            const id = `${call}-${name}`;
-            const { type, description, required } = data;
+        { Object.keys(params).length > 0 ? (
+          <>
+          <div className="spacer mt-3 mb-3"></div>
+          <div className="row gap-2 mt-4 justify-content-center">
+            { Object.entries(params).map(([name, data]) => {
+              const id = `${call}-${name}`;
+              const { type, description, required } = data;
 
-            return (
-              <DataInput
-                key={ id }
-                name={ name }
-                id={ id }
-                type={ type }
-                description={ description }
-                required={ required }
-              />
-            )
-          })}
+              return (
+                <DataInput
+                  key={ id }
+                  name={ name }
+                  id={ id }
+                  type={ type }
+                  description={ description }
+                  required={ required }
+                />
+              )
+            })}
+          </div>
+          </>
+        ) : (
+          <></>
+        )}
+
+        <div className="spacer mt-3 mb-4"></div>
+
+        { /* Response */}
+        <div className="row gap-2 mb-3 justify-content-center">
+          <div className="col-12 col-md-11 mb-3">
+            <label htmlFor="response" className="text-secondary mb-2">Response</label>
+            <textarea
+              type="text"
+              className="form-control bg-dark text-light"
+              id="response"
+              rows="6"
+            ></textarea>
+          </div>
         </div>
 
         <div className="d-flex justify-content-between align-items-center">
