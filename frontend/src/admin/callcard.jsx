@@ -12,10 +12,10 @@ const IconCircle = ({ color, icon }) => {
   )
 }
 
-const DataInput = ({ name, id, type, description }) => {
+const DataInput = ({ name, id, type, description, required }) => {
   return (
     <div className="d-flex flex-column col-12 col-md-11 mb-3">
-      <label htmlFor={ id } className="text-secondary mb-2">{ name } ({ type })</label>
+      <label htmlFor={ id } className="text-secondary mb-2">{ name }{ required ? '*' : '' } ({ type })</label>
       { type === "json" ? (
         <textarea
           type="text"
@@ -36,9 +36,8 @@ const DataInput = ({ name, id, type, description }) => {
   )
 }
 
-const CallCard = ({ call }) => {
-  const callFunc = API.remote[call];
-  const { type, url, description, params } = API.remoteMetadata[call];
+const CallCard = ({ call, data }) => {
+  const { type, url, description, params } = data;
   const { color, long, icon } = callData[type];
 
   return (
@@ -64,6 +63,7 @@ const CallCard = ({ call }) => {
                 id={ id }
                 type={ type }
                 description={ description }
+                required={ required }
               />
             )
           })}

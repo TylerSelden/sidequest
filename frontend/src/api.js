@@ -28,7 +28,8 @@ const API = {
   },
 
   remote: {
-    getQuests: () => request("GET", "/quests")
+    getQuests: () => request("GET", "/quests"),
+    putSeason: (key, season, quests, seasonName) => request("PUT", `/admin/quests/${season}`, { key, quests, seasonName }),
   },
 
   remoteMetadata: {
@@ -36,20 +37,26 @@ const API = {
       type: "GET",
       url: "/quests",
       description: "Get all quests in the current season, excluding upcoming ones.",
+      params: {}
+    },
+    putSeason: {
+      type: "PUT",
+      url: "/admin/season/{season}",
+      description: "Create a new season (optionally with quests), overwriting it if it already exists.",
       params: {
-        "Test": {
-          type: "number",
-          description: "A test parameter.",
+        "Key": {
+          type: "string",
+          description: "Your admin API key",
           required: true
         },
-        "Data": {
-          type: "json",
-          description: "Some data.",
+        "Quests": {
+          type: "array",
+          description: "An array of quests to be added to the season",
           required: false
         },
-        "More": {
+        "Season Name": {
           type: "string",
-          description: "Some more data.",
+          description: "The name of the season",
           required: true
         }
       }

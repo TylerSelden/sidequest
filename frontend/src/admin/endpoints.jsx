@@ -16,7 +16,9 @@ const Endpoints = () => {
       </h2>
 
       <div className="mt-2 row row-cols-3 row-cols-md-1 g-3 justify-content-center">
-        <CallCard call="getQuests" />
+        { Object.entries(API.remoteMetadata).map(([index, data]) => (
+          <CallCard key={ index } call={ index } data={ data } />
+        )) }
       </div>
     </div>
   );
