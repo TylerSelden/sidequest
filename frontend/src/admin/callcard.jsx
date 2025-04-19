@@ -12,16 +12,16 @@ const IconCircle = ({ color, icon }) => {
   )
 }
 
-const DataInput = ({ name, id, type, placeholder }) => {
+const DataInput = ({ name, id, type, description }) => {
   return (
-    <div key={ id } className="d-flex flex-column col-12 col-md-11">
-      <label htmlFor={ id } className="text-secondary">{ name }</label>
+    <div className="d-flex flex-column col-12 col-md-11 mb-3">
+      <label htmlFor={ id } className="text-secondary mb-2">{ name } ({ type })</label>
       { type === "json" ? (
         <textarea
           type="text"
           className="form-control bg-dark text-light"
           id={ id }
-          placeholder={ placeholder }
+          placeholder={ description }
           rows="6"
         ></textarea>
     ) : (
@@ -29,7 +29,7 @@ const DataInput = ({ name, id, type, placeholder }) => {
         type={ type === "number" ? "number" : "text" }
         className="form-control bg-dark text-light"
         id={ id }
-        placeholder={ placeholder }
+        placeholder={ description }
       />
     )}
     </div>
@@ -38,7 +38,7 @@ const DataInput = ({ name, id, type, placeholder }) => {
 
 const CallCard = ({ call }) => {
   const callFunc = API.remote[call];
-  const { type, url, description, params, paramTypes, paramDefaults, paramRequired } = API.remoteParams[call];
+  const { type, url, description, params } = API.remoteMetadata[call];
   const { color, long, icon } = callData[type];
 
   return (
@@ -51,13 +51,11 @@ const CallCard = ({ call }) => {
             <p className="fs-1 text-secondary hyphen-wrap mb-0">{ description }</p>
           </div>
         </div>
-        { /* Actual content here! There will be textboxes for each value, for now, put 2 dummy ones: text and number, and of course the response section */ }
+
         <div className="row gap-2 my-5 justify-content-center">
-          { paramTypes.map((paramType, index) => {
-            const name = `${params[index]}${paramRequired[index] ? '*' : ''}`;
+          { Object.entries(params).map(([name, data]) => {
             const id = `${call}-${name}`;
-            const type = paramTypes[index]; 
-            const placeholder = paramDefaults[index];
+            const { type, description, required } = data;
 
             return (
               <DataInput
@@ -65,11 +63,12 @@ const CallCard = ({ call }) => {
                 name={ name }
                 id={ id }
                 type={ type }
-                placeholder={ placeholder }
+                description={ description }
               />
             )
           })}
         </div>
+
         <div className="d-flex justify-content-between align-items-center">
           <p className="text-secondary fs-1 mb-0">{ long }</p>
           <button

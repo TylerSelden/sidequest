@@ -31,15 +31,28 @@ const API = {
     getQuests: () => request("GET", "/quests")
   },
 
-  remoteParams: {
+  remoteMetadata: {
     getQuests: {
       type: "GET",
       url: "/quests",
       description: "Get all quests in the current season, excluding upcoming ones.",
-      params: ["Test", "Data", "More"],
-      paramTypes: ["number", "json", "text"],
-      paramDefaults: [0, "{}", "This is a test"],
-      paramRequired: [true, false, true]
+      params: {
+        "Test": {
+          type: "number",
+          description: "A test parameter.",
+          required: true
+        },
+        "Data": {
+          type: "json",
+          description: "Some data.",
+          required: false
+        },
+        "More": {
+          type: "string",
+          description: "Some more data.",
+          required: true
+        }
+      }
     }
   }
 }
