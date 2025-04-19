@@ -2,11 +2,19 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { PiCastleTurretFill } from "react-icons/pi";
-import { FaMapMarkedAlt, FaLeaf, FaComments, FaPaintBrush, FaHiking, FaDiceD6 } from "react-icons/fa";
+import { FaMapMarkedAlt, FaLeaf, FaComments, FaPaintBrush, FaHiking, FaDiceD6, FaSearch, FaPlus, FaEdit, FaWrench, FaTrashAlt } from "react-icons/fa";
 import { FaBinoculars, FaCameraRetro, FaTrophy } from "react-icons/fa6";
 import { HiPuzzlePiece } from "react-icons/hi2";
 
 import API from "./api";
+
+const callData = {
+  "GET": { color: "#059669", long: "Retrieve Data", icon: <FaSearch /> },
+  "POST": { color: "#4c1d95", long: "Create Resource", icon: <FaPlus /> },
+  "PUT": { color: "#0ea5e9", long: "Update Resource", icon: <FaEdit /> },
+  "PATCH": { color: "#db2777", long: "Modify Resource", icon: <FaWrench /> },
+  "DELETE": { color: "#dc2626", long: "Remove Resource", icon: <FaTrashAlt /> }
+}
 
 const tagData = {
   "All Quests": { color: "#0ea5e9", long: "All Quests", icon: <PiCastleTurretFill /> },
@@ -32,6 +40,20 @@ const Footer = () => {
         <a href="./" className="mt-0 text-decoration-none text-secondary" style={{ fontSize: "0.75rem" }}>Home</a>
         { " | " }
         <a href="./terms" className="mt-0 text-decoration-none text-secondary" style={{ fontSize: "0.75rem" }}>Terms of Use</a>
+        { " | " }
+        <a
+          href="./#"
+          className="mt-0 text-decoration-none text-secondary"
+          style={{ fontSize: "0.75rem" }}
+          onClick={() => {
+            if (window.confirm("Are you sure? This action cannot be reversed.")) { 
+              localStorage.removeItem("sidequest");
+              window.location.reload();
+            }
+          }}
+        >
+          Clear local data
+        </a>
       </p>
     </div>
   );
@@ -106,10 +128,10 @@ let questData = {
 
 function setQuestData(obj) {
   questData = obj;
-  for (const id of API.questsCompleted) {
+  for (const id of API.local.questsCompleted) {
     let _obj = (questData.current[id] || questData.previous[id]);
     if (_obj) _obj.completed = true;
   }
 }
 
-export { tagData, Footer, questData, setQuestData };
+export { callData, tagData, Footer, questData, setQuestData };

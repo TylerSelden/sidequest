@@ -17,15 +17,31 @@ async function request(method, url, body) {
 }
 
 const API = {
-  setQuestCompletion: (id, completed) => {
-    let arr = JSON.parse(localStorage.getItem("sidequest") || "[]");
-    arr.push(id);
-    localStorage.setItem("sidequest", JSON.stringify(arr));
+  local: {
+    setQuestCompletion: (id, completed) => {
+      let arr = JSON.parse(localStorage.getItem("sidequest") || "[]");
+      arr.push(id);
+      localStorage.setItem("sidequest", JSON.stringify(arr));
+    },
+    questsCompleted: JSON.parse(localStorage.getItem("sidequest") || "[]"),
+    points: JSON.parse(localStorage.getItem("sidequest") || "[]").length * 10
   },
-  questsCompleted: JSON.parse(localStorage.getItem("sidequest") || "[]"),
-  points: JSON.parse(localStorage.getItem("sidequest") || "[]").length * 10,
 
-  getQuests: () => request("GET", "/quests")
+  remote: {
+    getQuests: () => request("GET", "/quests")
+  },
+
+  remoteParams: {
+    getQuests: {
+      type: "GET",
+      url: "/quests",
+      description: "Get all quests in the current season, excluding upcoming ones.",
+      params: ["Test", "Data", "More"],
+      paramTypes: ["number", "json", "text"],
+      paramDefaults: [0, "{}", "This is a test"],
+      paramRequired: [true, false, true]
+    }
+  }
 }
 
 

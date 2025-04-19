@@ -36,7 +36,7 @@ const QuestCard = ({ quest }) => {
     e.target.innerText = "Hold to undo";
     e.target.classList.add("undo");
     holdTimeout = setTimeout(() => {
-      API.setQuestCompletion(quest.id, false);
+      API.local.setQuestCompletion(quest.id, false);
       setCompleted(false);
       if (!e.type.startsWith("touch")) setDisableClick(true);
     }, 3000);
@@ -66,7 +66,7 @@ const QuestCard = ({ quest }) => {
                 style={{ backgroundColor: color }}
                 onClick={() => {
                   if (disableClick) return setDisableClick(false);
-                  API.setQuestCompletion(quest.id, true);
+                  API.local.setQuestCompletion(quest.id, true);
                   setCompleted(true);
                 }}
               >

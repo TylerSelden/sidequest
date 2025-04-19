@@ -7,6 +7,7 @@ import API from "./api";
 
 import Home from "./home/home";
 import Terms from "./terms/terms";
+import Admin from "./admin/admin";
 import { setQuestData } from "./global";
 
 export default function App() {
@@ -14,7 +15,7 @@ export default function App() {
 
   useEffect(() => {
     async function load() {
-      const response = await API.getQuests();
+      const response = await API.remote.getQuests();
       setQuestData(response);
 
       setLoaded(true);
@@ -33,6 +34,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={ <Home /> }></Route>
           <Route path="/terms" element={ <Terms /> }></Route>
+          <Route path="/admin" element={ <Admin /> }></Route>
         </Routes>
       )}
     </BrowserRouter>
