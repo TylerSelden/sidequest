@@ -3,7 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import CallCard from "./callcard";
 import API from "../api";
-import { callData } from "../global";
 
 import { BsCloudCheckFill } from "react-icons/bs";
 

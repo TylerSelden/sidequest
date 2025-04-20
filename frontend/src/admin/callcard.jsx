@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { FaChevronRight, FaChevronDown } from "react-icons/fa";
@@ -39,8 +39,6 @@ const DataInput = ({ name, id, type, description, required }) => {
 }
 
 const ParamList = ({ params }) => {
-  // if object.entries(params).length > 0, show params
-
   return (
     <div className="row gap-2 mt-4 justify-content-center">
       { Object.entries(params).map(([name, data]) => {
@@ -48,30 +46,23 @@ const ParamList = ({ params }) => {
         const { type, description, required } = data;
 
         return (
-          <div key={ id } className="d-flex flex-column col-12 col-md-11 mb-3">
-            <label htmlFor={ id } className="text-secondary mb-2">{ required ? '*' : '' }{ name } ({ type })</label>
-            { type === "json" ? (
-              <textarea
-                type="text"
-                className="form-control bg-dark text-light"
-                id={ id }
-                placeholder={ description }
-                rows="6"
-              ></textarea>
-            ) : (
-              <input
-                type={ type === "number" ? "number" : "text" }
-                className="form-control bg-dark text-light"
-                id={ id }
-                placeholder={ description }
-              />
-            )}
-          </div>
+          <DataInput
+            key={ id }
+            name={ name }
+            id={ id }
+            type={ type }
+            description={ description }
+            required={ required }
+          />
         )
       })}
     </div>
   );
 };
+
+const makeCall = (call, params) => {
+  console.log(call, params);
+}
 
 const CallCard = ({ call, data }) => {
   const { type, url, description, params } = data;
