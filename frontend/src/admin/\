@@ -30,7 +30,7 @@ const DataInput = ({ name, id, type, description, required, value, onChange }) =
         ></textarea>
     ) : (
       <input
-        type={ type }
+        type={ type === "number" ? "number" : "text" }
         className="form-control bg-dark text-light"
         id={ id }
         placeholder={ description }
@@ -57,7 +57,7 @@ const ParamList = ({ params, paramValues, onChange }) => {
             type={ type }
             description={ description }
             required={ required }
-            value={ paramValues[name].value }
+            value={ paramValues[name] }
             onChange={ onChange }
           />
         )
@@ -66,31 +66,35 @@ const ParamList = ({ params, paramValues, onChange }) => {
   );
 };
 
+const makeCall = (call, params) => {
+  console.log(call, params);
+}
+
 const CallCard = ({ call, data }) => {
   const { type, url, description, params } = data;
   const { color, long, icon } = callData[type];
 
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [paramValues, setParamValues] = useState(
-    Object.fromEntries(Object.entries(params).map(([name, obj]) => {
-      const { formal, required } = obj;
-      return [name, { formal, required, value: "" }];
-    }))
-  );
-  const [resValue, setResValue] = useState("");
-
+  const [paramValues, setParamValues] = useState(Object.fromEntries(Object.keys(params).map(key => [key, ""])));
   const handleInputChange = (key, value) => {
-    setParamValues(prev => ({ ...prev, [key]: { ...prev[key], value } }));
+    setParamValues(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleCall = async () => {
-    if (Object.values(paramValues).some(param => param.required && !param.value)) return alert("Please fill all required parameters.");
+  const handleCall = () => {
+    const parsedParams = Object.fromEntries(
+      Object.entries(paramValues).map(([key, val]) => {
+        try {
+          return [
+            key,
+            params[key].type === "json" ? JSON.parse(val || "{}") : val,
+          ];
+        } catch {
+          return [key, val];
+        }
+      })
+    );
 
-    setResValue("Loading...");
-
-    const res = await API.remote[call](...Object.values(paramValues).map(param => param.value));
- 
-    setResValue(JSON.stringify(res, null, 2));
+    console.log("Parsed for API:", parsedParams);
   };
 
 
@@ -125,7 +129,7 @@ const CallCard = ({ call, data }) => {
             { Object.keys(params).length > 0 && (
               <>
                 <div className="spacer mt-3 mb-3"></div>
-                <ParamList params={ params} paramValues={ paramValues } onChange={ handleInputChange } />
+                <ParamList params={ params } />
               </>
             )}
 
@@ -139,8 +143,6 @@ const CallCard = ({ call, data }) => {
                   className="form-control bg-dark text-light"
                   id="response"
                   rows="6"
-                  value={ resValue }
-                  readOnly
                 ></textarea>
               </div>
             </div>

@@ -6,14 +6,28 @@ async function request(method, url, body) {
     headers: {
       "Content-Type": "application/json",
     }
-  };
-  if (body) options.body = JSON.stringify(body);
+  }
+  if (body) {
+    body = JSON.stringify(body);
+    if (method === "GET") {
+      // add body as URL params
+      url += `?data=${encodeURIComponent(body)}`;
+    } else {
+      options.body = body;
+    }
+  }
+
 
   const res = await fetch(`${baseURL}${url}`, options);
-  const json = await res.json();
 
-  if (!res.ok) throw new Error(json.data || "Request failed");
-  return json.data;
+  let text = await res.text();
+  try {
+    text = JSON.parse(text).data;
+  } catch {
+    alert("Error parsing API response");
+  }
+
+  return text;
 }
 
 const API = {
@@ -30,17 +44,19 @@ const API = {
   remote: {
     getQuests:            () => request("GET", "/quests"),
 
-    putSeason:            (key, season, quests, seasonName) => request("PUT", `/admin/quests/${season}`, { key, quests, seasonName }),
-    patchSeason:          (key, season) => request("PATCH", `/admin/quests/${season}`, { key }),
-    deleteSeason:         (key, season) => request("DELETE", `/admin/quests/${season}`, { key }),
+    putSeason:            (key, season, quests, seasonName) => request("PUT", `/admin/season/${season}`, { key, quests, seasonName }),
+    patchSeason:          (key, season) => request("PATCH", `/admin/season/${season}`, { key }),
+    deleteSeason:         (key, season) => request("DELETE", `/admin/season/${season}`, { key }),
 
     putQuests:            (key, season, quests) => request("PUT", `/admin/quests/${season}`, { key, quests }),
     postQuests:           (key, season, quests) => request("POST", `/admin/quests/${season}`, { key, quests }),
     deleteQuests:         (key, season, quests) => request("DELETE", `/admin/quests/${season}`, { key, quests }),
     adminGetQuestsSeason: (key, season) => request("GET", `/admin/quests/${season}`, { key }),
     adminGetQuests:       (key) => request("GET", "/admin/quests", { key }),
-    getSeasons:           (key) => request("GET", "/admin/seasons"),
+    getSeasons:           (key) => request("GET", "/admin/seasons", { key }),
   },
+
+  // params must be listed in order of appearance in their respective functions
 
   remoteMetadata: {
     getQuests: {
@@ -56,16 +72,25 @@ const API = {
       description: "Create a new season (optionally with quests), overwriting it if it already exists",
       params: {
         "Key": {
-          type: "string",
+          formal: "key",
+          type: "password",
           description: "Your admin API key",
           required: true
         },
+        "Season": {
+          formal: "season",
+          type: "number",
+          description: "The season number",
+          required: true
+        },
         "Quests": {
-          type: "array",
+          formal: "quests",
+          type: "json",
           description: "An array of quests to be added to the season",
           required: false
         },
         "Season Name": {
+          formal: "seasonName",
           type: "string",
           description: "The name of the season",
           required: true
@@ -78,11 +103,13 @@ const API = {
       description: "Change the current season number",
       params: {
         "Key": {
-          type: "string",
+          formal: "key",
+          type: "password",
           description: "Your admin API key",
           required: true
         },
         "Season": {
+          formal: "season",
           type: "number",
           description: "The new season number",
           required: true
@@ -95,11 +122,13 @@ const API = {
       description: "Delete a season",
       params: {
         "Key": {
-          type: "string",
+          formal: "key",
+          type: "password",
           description: "Your admin API key",
           required: true
         },
         "Season": {
+          formal: "season",
           type: "number",
           description: "The season number",
           required: true
@@ -113,17 +142,20 @@ const API = {
       description: "Completely overwrite all quests in a season",
       params: {
         "Key": {
-          type: "string",
+          formal: "key",
+          type: "password",
           description: "Your admin API key",
           required: true
         },
         "Season": {
+          formal: "season",
           type: "number",
           description: "The season number",
           required: true
         },
         "Quests": {
-          type: "array",
+          formal: "quests",
+          type: "json",
           description: "An array of quests to be added to the season",
           required: true
         }
@@ -135,17 +167,20 @@ const API = {
       description: "Add or modify quests in a season, without overwriting existing ones",
       params: {
         "Key": {
-          type: "string",
+          formal: "key",
+          type: "password",
           description: "Your admin API key",
           required: true
         },
         "Season": {
+          formal: "season",
           type: "number",
           description: "The season number",
           required: true
         },
         "Quests": {
-          type: "array",
+          formal: "quests",
+          type: "json",
           description: "An array of quests to be added to the season",
           required: true
         }
@@ -157,16 +192,19 @@ const API = {
       description: "Delete quests from a season by ID",
       params: {
         "Key": {
-          type: "string",
+          formal: "key",
+          type: "password",
           description: "Your admin API key",
           required: true
         },
         "Season": {
+          formal: "season",
           type: "number",
           description: "The season number",
           required: true
         },
         "Quests": {
+          formal: "quests",
           type: "json",
           description: "An array of quest IDs to be deleted from the season",
           required: true
@@ -179,11 +217,13 @@ const API = {
       description: "Get all quests in a specific season, including upcoming ones",
       params: {
         "Key": {
-          type: "string",
+          formal: "key",
+          type: "password",
           description: "Your admin API key",
           required: true
         },
         "Season": {
+          formal: "season",
           type: "number",
           description: "The season number",
           required: true
@@ -196,7 +236,8 @@ const API = {
       description: "Get all quests in all seasons, including upcoming ones",
       params: {
         "Key": {
-          type: "string",
+          formal: "key",
+          type: "password",
           description: "Your admin API key",
           required: true
         }
@@ -208,7 +249,8 @@ const API = {
       description: "Get a list of all seasons",
       params: {
         "Key": {
-          type: "string",
+          formal: "key",
+          type: "password",
           description: "Your admin API key",
           required: true
         }
