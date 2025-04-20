@@ -1,4 +1,6 @@
-- Admin panel with full API access-
-- A default season
+- Update prompt
+- Friendlier admin JSON editor
+- A better way to store admin API key locally
+
 - A point counter
 - A better way to tell the user what season it is

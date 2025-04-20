@@ -3,6 +3,7 @@ const path = require("path");
 const https = require("https");
 const cors = require("cors");
 const express = require("express");
+const rateLimit = require("express-rate-limit");
 const config = require("../secrets/config.json");
 
 const ssl = {
@@ -12,7 +13,15 @@ const ssl = {
 const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
-// middleware function for all get requests
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 60,
+  message: "Too many requests, please try again later.",
+  standardHeaders: true,
+  legacyHeaders: false
+});
+app.use(limiter);
 
 app.use((req, res, next) => {
   if (req.method === "GET" && req.query.data) {

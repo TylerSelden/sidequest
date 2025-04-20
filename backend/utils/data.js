@@ -3,7 +3,7 @@ const { uuid } = require("./misc.js");
 let currentSeason = 0;
 
 let seasons = [
-  "Season 0 :D"
+  "Placeholder"
 ];
 
 class Quest {
