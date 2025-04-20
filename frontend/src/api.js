@@ -38,6 +38,8 @@ const API = {
       localStorage.setItem("sidequest", JSON.stringify(arr));
     },
     questsCompleted: JSON.parse(localStorage.getItem("sidequest") || "[]"),
+    setAdminKey: (key) => localStorage.setItem("sidequestKey", key),
+    adminKey: localStorage.getItem("sidequestKey") || "",
     points: JSON.parse(localStorage.getItem("sidequest") || "[]").length * 10
   },
 
@@ -62,6 +64,7 @@ const API = {
     getQuests: {
       type: "GET",
       url: "/quests",
+      privileged: false,
       description: "Get all quests in the current season, excluding upcoming ones",
       params: {}
     },
@@ -69,14 +72,9 @@ const API = {
     putSeason: {
       type: "PUT",
       url: "/admin/season/{season}",
+      privileged: true,
       description: "Create a new season (optionally with quests), overwriting it if it already exists",
       params: {
-        "Key": {
-          formal: "key",
-          type: "password",
-          description: "Your admin API key",
-          required: true
-        },
         "Season": {
           formal: "season",
           type: "number",
@@ -100,14 +98,9 @@ const API = {
     patchSeason: {
       type: "PATCH",
       url: "/admin/season/{season}",
+      privileged: true,
       description: "Change the current season number",
       params: {
-        "Key": {
-          formal: "key",
-          type: "password",
-          description: "Your admin API key",
-          required: true
-        },
         "Season": {
           formal: "season",
           type: "number",
@@ -119,14 +112,9 @@ const API = {
     deleteSeason: {
       type: "DELETE",
       url: "/admin/season/{season}",
+      privileged: true,
       description: "Delete a season",
       params: {
-        "Key": {
-          formal: "key",
-          type: "password",
-          description: "Your admin API key",
-          required: true
-        },
         "Season": {
           formal: "season",
           type: "number",
@@ -139,14 +127,9 @@ const API = {
     putQuests: {
       type: "PUT",
       url: "/admin/quests/{season}",
+      privileged: true,
       description: "Completely overwrite all quests in a season",
       params: {
-        "Key": {
-          formal: "key",
-          type: "password",
-          description: "Your admin API key",
-          required: true
-        },
         "Season": {
           formal: "season",
           type: "number",
@@ -164,14 +147,9 @@ const API = {
     postQuests: {
       type: "POST",
       url: "/admin/quests/{season}",
+      privileged: true,
       description: "Add or modify quests in a season, without overwriting existing ones",
       params: {
-        "Key": {
-          formal: "key",
-          type: "password",
-          description: "Your admin API key",
-          required: true
-        },
         "Season": {
           formal: "season",
           type: "number",
@@ -189,14 +167,9 @@ const API = {
     deleteQuests: {
       type: "DELETE",
       url: "/admin/quests/{season}",
+      privileged: true,
       description: "Delete quests from a season by ID",
       params: {
-        "Key": {
-          formal: "key",
-          type: "password",
-          description: "Your admin API key",
-          required: true
-        },
         "Season": {
           formal: "season",
           type: "number",
@@ -214,14 +187,9 @@ const API = {
     adminGetQuestsSeason: {
       type: "GET",
       url: "/admin/quests/{season}",
+      privileged: true,
       description: "Get all quests in a specific season, including upcoming ones",
       params: {
-        "Key": {
-          formal: "key",
-          type: "password",
-          description: "Your admin API key",
-          required: true
-        },
         "Season": {
           formal: "season",
           type: "number",
@@ -233,28 +201,16 @@ const API = {
     adminGetQuests: {
       type: "GET",
       url: "/admin/quests",
+      privileged: true,
       description: "Get all quests in all seasons, including upcoming ones",
-      params: {
-        "Key": {
-          formal: "key",
-          type: "password",
-          description: "Your admin API key",
-          required: true
-        }
-      }
+      params: {}
     },
     getSeasons: {
       type: "GET",
       url: "/admin/seasons",
+      privileged: true,
       description: "Get a list of all seasons",
-      params: {
-        "Key": {
-          formal: "key",
-          type: "password",
-          description: "Your admin API key",
-          required: true
-        }
-      }
+      params: {}
     }
   }
 }

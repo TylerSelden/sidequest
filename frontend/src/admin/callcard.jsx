@@ -14,7 +14,7 @@ const IconCircle = ({ color, icon }) => {
   )
 }
 
-const DataInput = ({ name, id, type, description, required, value, onChange }) => {
+const DataInput = ({ name, formal, id, type, description, required, value, onChange }) => {
   return (
     <div className="d-flex flex-column col-12 col-md-11 mb-3">
       <label htmlFor={ id } className="text-secondary mb-2">{ required ? '*' : '' }{ name } ({ type })</label>
@@ -66,8 +66,8 @@ const ParamList = ({ params, paramValues, onChange }) => {
   );
 };
 
-const CallCard = ({ call, data }) => {
-  const { type, url, description, params } = data;
+const CallCard = ({ call, data, apiKey }) => {
+  const { type, url, privileged, description, params } = data;
   const { color, long, icon } = callData[type];
 
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -85,10 +85,12 @@ const CallCard = ({ call, data }) => {
 
   const handleCall = async () => {
     if (Object.values(paramValues).some(param => param.required && !param.value)) return alert("Please fill all required parameters.");
-
+    if (privileged && !apiKey) return alert("This call requires admin privileges. Please provide an API key.");
     setResValue("Loading...");
 
-    const res = await API.remote[call](...Object.values(paramValues).map(param => param.value));
+    // if privileged, add apiKey as key as first parameter
+    const paramValuesWithKey = privileged ? { ...paramValues, key: { value: apiKey } } : paramValues;
+    const res = await API.remote[call](...Object.values(paramValuesWithKey).map(param => param.value));
  
     setResValue(JSON.stringify(res, null, 2));
   };
