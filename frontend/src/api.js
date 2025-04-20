@@ -16,6 +16,7 @@ async function request(method, url, body) {
       options.body = body;
     }
   }
+  console.log(url)
 
 
   const res = await fetch(`${baseURL}${url}`, options);

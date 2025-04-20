@@ -89,7 +89,8 @@ const CallCard = ({ call, data, apiKey }) => {
     setResValue("Loading...");
 
     // if privileged, add apiKey as key as first parameter
-    const paramValuesWithKey = privileged ? { ...paramValues, key: { value: apiKey } } : paramValues;
+    const paramValuesWithKey = privileged ? { key: { value: apiKey }, ...paramValues } : paramValues;
+    console.log(paramValuesWithKey);
     const res = await API.remote[call](...Object.values(paramValuesWithKey).map(param => param.value));
  
     setResValue(JSON.stringify(res, null, 2));
