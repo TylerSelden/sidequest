@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import { FaChevronRight, FaChevronDown } from "react-icons/fa";
+
 import API from "../api";
 import { callData } from "../global";
 
@@ -36,9 +38,46 @@ const DataInput = ({ name, id, type, description, required }) => {
   )
 }
 
+const ParamList = ({ params }) => {
+  // if object.entries(params).length > 0, show params
+
+  return (
+    <div className="row gap-2 mt-4 justify-content-center">
+      { Object.entries(params).map(([name, data]) => {
+        const id = `param-${name}`;
+        const { type, description, required } = data;
+
+        return (
+          <div key={ id } className="d-flex flex-column col-12 col-md-11 mb-3">
+            <label htmlFor={ id } className="text-secondary mb-2">{ required ? '*' : '' }{ name } ({ type })</label>
+            { type === "json" ? (
+              <textarea
+                type="text"
+                className="form-control bg-dark text-light"
+                id={ id }
+                placeholder={ description }
+                rows="6"
+              ></textarea>
+            ) : (
+              <input
+                type={ type === "number" ? "number" : "text" }
+                className="form-control bg-dark text-light"
+                id={ id }
+                placeholder={ description }
+              />
+            )}
+          </div>
+        )
+      })}
+    </div>
+  );
+};
+
 const CallCard = ({ call, data }) => {
   const { type, url, description, params } = data;
   const { color, long, icon } = callData[type];
+
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   return (
     <div className="col-12">
@@ -49,60 +88,60 @@ const CallCard = ({ call, data }) => {
             <h3 className="mt-2 h5 fw-bold mb-1">{ call }: { url }</h3>
             <p className="fs-1 text-secondary hyphen-wrap mb-0">{ description }</p>
           </div>
+          <div className="ms-auto">
+            <button
+              className="btn rounded-circle p-0"
+              style={{ width: "30px", height: "30px", aspectRatio: "1/1", fontSize: "20px", backgroundColor: "#334155" }}
+              onClick={() => {
+                setIsCollapsed(!isCollapsed);
+              }}
+            >
+              <span className="d-flex justify-content-center align-items-center">
+                { isCollapsed ? <FaChevronRight /> : <FaChevronDown /> }
+              </span>
+            </button>
+          </div>
         </div>
 
-        { Object.keys(params).length > 0 ? (
-          <>
-          <div className="spacer mt-3 mb-3"></div>
-          <div className="row gap-2 mt-4 justify-content-center">
-            { Object.entries(params).map(([name, data]) => {
-              const id = `${call}-${name}`;
-              const { type, description, required } = data;
-
-              return (
-                <DataInput
-                  key={ id }
-                  name={ name }
-                  id={ id }
-                  type={ type }
-                  description={ description }
-                  required={ required }
-                />
-              )
-            })}
-          </div>
-          </>
-        ) : (
+        { isCollapsed ? (
           <></>
+        ) : (
+          <>
+            { Object.keys(params).length > 0 && (
+              <>
+                <div className="spacer mt-3 mb-3"></div>
+                <ParamList params={ params } />
+              </>
+            )}
+
+            <div className="spacer mt-3 mb-4"></div>
+
+            <div className="row gap-2 mb-3 justify-content-center">
+              <div className="col-12 col-md-11 mb-3">
+                <label htmlFor="response" className="text-secondary mb-2">Response</label>
+                <textarea
+                  type="text"
+                  className="form-control bg-dark text-light"
+                  id="response"
+                  rows="6"
+                ></textarea>
+              </div>
+            </div>
+
+            <div className="d-flex justify-content-between align-items-center">
+              <p className="text-secondary fs-1 mb-0">{ long }</p>
+              <button
+                className="btn rounded-pill px-3 btn-sm mb-0 text-light"
+                style={{ backgroundColor: color }}
+                onClick={() => {
+                  alert("placeholder")
+                }}
+              >
+                { type }
+              </button>
+            </div>
+          </>
         )}
-
-        <div className="spacer mt-3 mb-4"></div>
-
-        { /* Response */}
-        <div className="row gap-2 mb-3 justify-content-center">
-          <div className="col-12 col-md-11 mb-3">
-            <label htmlFor="response" className="text-secondary mb-2">Response</label>
-            <textarea
-              type="text"
-              className="form-control bg-dark text-light"
-              id="response"
-              rows="6"
-            ></textarea>
-          </div>
-        </div>
-
-        <div className="d-flex justify-content-between align-items-center">
-          <p className="text-secondary fs-1 mb-0">{ long }</p>
-          <button
-            className="btn rounded-pill px-3 btn-sm mb-0 text-light"
-            style={{ backgroundColor: color }}
-            onClick={() => {
-              alert("placeholder")
-            }}
-          >
-            { type }
-          </button>
-        </div>
       </div>
     </div>
   );

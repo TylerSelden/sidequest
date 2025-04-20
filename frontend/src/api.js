@@ -38,7 +38,8 @@ const API = {
     postQuests:           (key, season, quests) => request("POST", `/admin/quests/${season}`, { key, quests }),
     deleteQuests:         (key, season, quests) => request("DELETE", `/admin/quests/${season}`, { key, quests }),
     adminGetQuestsSeason: (key, season) => request("GET", `/admin/quests/${season}`, { key }),
-    adminGetQuests:       (key) => request("GET", "/admin/quests", { key })
+    adminGetQuests:       (key) => request("GET", "/admin/quests", { key }),
+    getSeasons:           (key) => request("GET", "/admin/seasons"),
   },
 
   remoteMetadata: {
@@ -193,6 +194,18 @@ const API = {
       type: "GET",
       url: "/admin/quests",
       description: "Get all quests in all seasons, including upcoming ones",
+      params: {
+        "Key": {
+          type: "string",
+          description: "Your admin API key",
+          required: true
+        }
+      }
+    },
+    getSeasons: {
+      type: "GET",
+      url: "/admin/seasons",
+      description: "Get a list of all seasons",
       params: {
         "Key": {
           type: "string",

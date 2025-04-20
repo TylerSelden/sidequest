@@ -24,6 +24,7 @@ let { currentSeason, seasons, Quest, allQuests, questData, updateQuestData } = r
   * DELETE /admin/quests/:season     - Delete quests by ID
   * GET    /admin/quests/:season     - Get all quests in season
   * GET    /admin/quests             - Get all quests in all seasons
+  * GET    /admin/seasons            - Get all seasons
   *
 */
 
@@ -157,6 +158,11 @@ app.get("/admin/quests", auth, (req, res) => {
   }
 
   res.json({ data });
+});
+
+// get seasons
+app.get("/admin/seasons", auth, (req, res) => {
+  res.json({ data: seasons });
 });
 
 
