@@ -26,7 +26,7 @@ const DataInput = ({ name, formal, id, type, description, required, value, onCha
           placeholder={ description }
           rows="6"
           value={ value }
-          onChange={ (e) => onChange(name, e.target.value) }
+          onChange={ (e) => onChange(name, e.target.value, true) }
         ></textarea>
     ) : (
       <input
@@ -73,13 +73,13 @@ const CallCard = ({ call, data, apiKey }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [paramValues, setParamValues] = useState(
     Object.fromEntries(Object.entries(params).map(([name, obj]) => {
-      const { formal, required } = obj;
-      return [name, { formal, required, value: "" }];
+      const { formal, required, type } = obj;
+      return [name, { formal, required, type, value: "" }];
     }))
   );
   const [resValue, setResValue] = useState("");
 
-  const handleInputChange = (key, value) => {
+  const handleInputChange = (key, value, isJSON) => {
     setParamValues(prev => ({ ...prev, [key]: { ...prev[key], value } }));
   };
 
@@ -89,8 +89,20 @@ const CallCard = ({ call, data, apiKey }) => {
     setResValue("Loading...");
 
     // if privileged, add apiKey as key as first parameter
-    const paramValuesWithKey = privileged ? { key: { value: apiKey }, ...paramValues } : paramValues;
-    console.log(paramValuesWithKey);
+    const paramValuesWithKey = Object.entries(privileged ? { key: { value: apiKey }, ...paramValues } : paramValues)
+      .reduce((acc, [key, param]) => {
+        if (param.type === "json" && param.value !== "") {
+          try {
+            acc[key] = { ...param, value: JSON.parse(param.value) };
+          } catch {
+            setResValue(`Local error: Invalid JSON for parameter "${key}"`);
+            throw new Error(`Invalid JSON for parameter: "${key}"`);
+          }
+        } else {
+        acc[key] = param;
+      }
+      return acc;
+    }, {});
     const res = await API.remote[call](...Object.values(paramValuesWithKey).map(param => param.value));
  
     setResValue(JSON.stringify(res, null, 2));

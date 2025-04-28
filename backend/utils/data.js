@@ -1,11 +1,5 @@
 const { uuid } = require("./misc.js");
 
-let currentSeason = 0;
-
-let seasons = [
-  "Placeholder"
-];
-
 class Quest {
   constructor(data) {
     const { id, tag, description, status } = data || {};
@@ -16,20 +10,29 @@ class Quest {
   }
 }
 
-let allQuests = [{}];
+let state = {
+  season: 0,
+  seasons: [ "Placeholder" ],
+  seasonName: "Placeholder",
+  allQuests: [{}]
+};
+
 let questData = {};
 
-function updateQuestData() {
+function updateState(season) {
+  if (season) state.season = season;
+  state.seasonName = state.seasons[season];
+
   // don't completely reassign the object, to prevent breaking references
   questData.upcoming = {};
   questData.current = {};
   questData.previous = {};
 
-  for (const id in allQuests[currentSeason]) {
-    const quest = allQuests[currentSeason][id];
+  for (const id in state.allQuests[state.season]) {
+    const quest = state.allQuests[state.season][id];
     if (questData[quest.status]) questData[quest.status][id] = quest;
   }
 }
-updateQuestData();
+updateState();
 
-module.exports = { currentSeason, seasons, Quest, allQuests, questData, updateQuestData };
+module.exports = { state, Quest, questData, updateState };

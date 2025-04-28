@@ -1,14 +1,13 @@
 const fs = require("fs");
 const path = require("path");
 const https = require("https");
-const cron = require("node-cron");
 const cors = require("cors");
 const express = require("express");
 const config = require("./secrets/config.json");
 
 const { auth, checkExists, uuid } = require("./utils/misc.js");
 const { app, startServer } = require("./utils/server.js");
-let { currentSeason, seasons, Quest, allQuests, questData, updateQuestData } = require("./utils/data.js");
+let { state, Quest, questData, updateState } = require("./utils/data.js");
 
 
 /*
@@ -30,8 +29,8 @@ let { currentSeason, seasons, Quest, allQuests, questData, updateQuestData } = r
 
 app.get("/quests", (req, res) => {
   const { upcoming, ...cleanQuestData } = questData;
-  cleanQuestData.season = currentSeason;
-  cleanQuestData.seasonName = seasons[currentSeason];
+  cleanQuestData.season = state.season;
+  cleanQuestData.seasonName = state.seasonName;
 
   res.json({ data: cleanQuestData });
 });
@@ -43,15 +42,15 @@ app.put("/admin/season/:season", auth, (req, res) => {
   const { quests, seasonName } = req.body;
   if (!checkExists(res, [season, seasonName])) return;
 
-  seasons[season] = seasonName;
-  allQuests[season] = {};
+  state.seasons[season] = seasonName;
+  state.allQuests[season] = {};
   if (quests) {
     for (const quest of quests) {
       quest.id = uuid();
-      allQuests[season][quest.id] = new Quest(quest);
+      state.allQuests[season][quest.id] = new Quest(quest);
     }
   }
-  updateQuestData();
+  updateState(season);
 
   res.json({ data: "Success" });
 });
@@ -59,10 +58,9 @@ app.put("/admin/season/:season", auth, (req, res) => {
 app.patch("/admin/season/:season", auth, (req, res) => {
   const { season } = req.params;
   if (!checkExists(res, [season])) return;
-  if (!allQuests[season]) return res.status(404).json({ data: "Not Found" });
+  if (!state.seasons[season]) return res.status(404).json({ data: "Not Found" });
 
-  currentSeason = season;
-  updateQuestData();
+  updateState(season);
 
   res.json({ data: "Success" });
 });
@@ -71,11 +69,11 @@ app.delete("/admin/season/:season", auth, (req, res) => {
   const { season } = req.params;
 
   if (!checkExists(res, [season])) return;
-  if (!seasons[season]) return res.status(404).json({ data: "Not Found" });
-  if (season === currentSeason) return res.status(400).json({ data: "Cannot delete current season" });
+  if (!state.seasons[season]) return res.status(404).json({ data: "Not Found" });
+  if (season === state.season) return res.status(400).json({ data: "Cannot delete current season" });
 
-  delete allQuests[season];
-  delete seasons[season];
+  delete state.allQuests[season];
+  delete state.seasons[season];
 
   res.json({ data: "Success" });
 });
@@ -86,14 +84,14 @@ app.put("/admin/quests/:season", auth, (req, res) => {
   const { season } = req.params;
   const { quests } = req.body;
   if (!checkExists(res, [season, quests])) return;
-  if (!allQuests[season]) return res.status(404).json({ data: "Not Found" });
+  if (!state.seasons[season]) return res.status(404).json({ data: "Not Found" });
 
-  allQuests[season] = {};
+  state.allQuests[season] = {};
   for (const quest of quests) {
     quest.id = uuid();
-    allQuests[season][quest.id] = new Quest(quest);
+    state.allQuests[season][quest.id] = new Quest(quest);
   }
-  updateQuestData();
+  updateState();
 
   res.json({ data: "Success" });
 });
@@ -102,13 +100,13 @@ app.post("/admin/quests/:season", auth, (req, res) => {
   const { season } = req.params;
   const { quests } = req.body;
   if (!checkExists(res, [season, quests])) return;
-  if (!allQuests[season]) return res.status(404).json({ data: "Not Found" });
+  if (!state.seasons[season]) return res.status(404).json({ data: "Not Found" });
 
   for (const quest of quests) {
     quest.id = uuid();
-    allQuests[season][quest.id] = new Quest(quest);
+    state.allQuests[season][quest.id] = new Quest(quest);
   }
-  updateQuestData();
+  updateState();
 
   res.json({ data: "Success" });
 });
@@ -117,10 +115,10 @@ app.delete("/admin/quests/:season", auth, (req, res) => {
   const { season } = req.params;
   const { quests } = req.body;
   if (!checkExists(res, [season, quests])) return;
-  if (!allQuests[season]) return res.status(404).json({ data: "Not Found" });
+  if (!state.seasons[season]) return res.status(404).json({ data: "Not Found" });
 
-  for (const quest of quests) delete allQuests[season][quest];
-  updateQuestData();
+  for (const quest of quests) delete state.allQuests[season][quest];
+  updateState();
 
   res.json({ data: "Success" });
 });
@@ -128,15 +126,15 @@ app.delete("/admin/quests/:season", auth, (req, res) => {
 app.get("/admin/quests/:season", auth, (req, res) => {
   const { season } = req.params;
   if (!checkExists(res, [season])) return;
-  if (!allQuests[season]) return res.status(404).json({ data: "Not Found" });
+  if (!state.seasons[season]) return res.status(404).json({ data: "Not Found" });
 
   let data = {
     upcoming: {},
     current: {},
     previous: {}
   };
-  for (const id in allQuests[season]) {
-    const quest = allQuests[season][id];
+  for (const id in state.allQuests[season]) {
+    const quest = state.allQuests[season][id];
     if (data[quest.status]) data[quest.status][id] = quest;
   }
 
@@ -145,14 +143,14 @@ app.get("/admin/quests/:season", auth, (req, res) => {
 
 app.get("/admin/quests", auth, (req, res) => {
   const data = {};
-  for (const season in allQuests) {
+  for (const season in state.allQuests) {
     data[season] = {
       upcoming: {},
       current: {},
       previous: {}
     };
-    for (const id in allQuests[season]) {
-      const quest = allQuests[season][id];
+    for (const id in state.allQuests[season]) {
+      const quest = state.allQuests[season][id];
       if (data[season][quest.status]) data[season][quest.status][id] = quest;
     }
   }
@@ -162,7 +160,7 @@ app.get("/admin/quests", auth, (req, res) => {
 
 // get seasons
 app.get("/admin/seasons", auth, (req, res) => {
-  res.json({ data: seasons });
+  res.json({ data: state.seasons });
 });
 
 
