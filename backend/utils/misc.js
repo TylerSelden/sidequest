@@ -2,7 +2,6 @@ const fs = require("fs");
 const path = require("path");
 const { randomUUID } = require("crypto");
 const config = require("../secrets/config.json");
-const { saveFile, state } = require("./data.js");
 
 function auth(req, res, next) {
   if (req.data.key !== config.adminKey) return res.status(401).json({ data: "Unauthorized" });
@@ -18,5 +17,16 @@ function checkExists(res, data) {
   return true;
 }
 
+function shuffle(arr) {
+  for (var i = 0; i < arr.length - 1; i++) {
+    var j = i + Math.floor(Math.random() * (arr.length - i));
 
-module.exports = { auth, checkExists };
+    var temp = arr[j];
+    arr[j] = arr[i];
+    arr[i] = temp;
+  }
+  return arr;
+}
+
+
+module.exports = { auth, checkExists, shuffle };

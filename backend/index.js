@@ -4,7 +4,7 @@ const cors = require("cors");
 const express = require("express");
 const config = require("./secrets/config.json");
 
-const { auth, checkExists } = require("./utils/misc.js");
+const { auth, checkExists, shuffle } = require("./utils/misc.js");
 const { app, startServer } = require("./utils/server.js");
 let { state, Quest, questData, updateState, updateGame } = require("./utils/data.js");
 
@@ -46,6 +46,7 @@ app.put("/admin/season/:season", auth, (req, res) => {
   state.seasons[season] = seasonName;
   state.allQuests[season] = {};
   if (quests) {
+    shuffle(quests);
     for (const quest of quests) {
       quest.id = randomUUID();
       state.allQuests[season][quest.id] = new Quest(quest);
@@ -88,6 +89,7 @@ app.put("/admin/quests/:season", auth, (req, res) => {
   if (!state.seasons[season]) return res.status(404).json({ data: "Not Found" });
 
   state.allQuests[season] = {};
+  shuffle(quests);
   for (const quest of quests) {
     quest.id = randomUUID();
     state.allQuests[season][quest.id] = new Quest(quest);
@@ -103,6 +105,7 @@ app.post("/admin/quests/:season", auth, (req, res) => {
   if (!checkExists(res, [season, quests])) return;
   if (!state.seasons[season]) return res.status(404).json({ data: "Not Found" });
 
+  shuffle(quests);
   for (const quest of quests) {
     quest.id = randomUUID();
     state.allQuests[season][quest.id] = new Quest(quest);

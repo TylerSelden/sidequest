@@ -24,7 +24,7 @@ const limiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false
 });
-app.use(limiter);
+//app.use(limiter);
 
 app.use((req, res, next) => {
   if (req.method === "GET" && req.query.data) {

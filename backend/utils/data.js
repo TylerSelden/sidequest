@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const config = require("../secrets/config.json");
 
+const { shuffle } = require("./misc.js");
 const saveFile = path.join(__dirname, "../secrets", config.saveFile);
 const saveFileExists = fs.existsSync(saveFile);
 
@@ -66,6 +67,7 @@ function updateGame() {
 
   // move current quests to previous
   for (const id in questData.current) state.allQuests[state.season][id].status = "previous";
+  shuffle(questData.current);
 
   updateState();
 }

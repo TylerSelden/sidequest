@@ -27,7 +27,7 @@ const tagData = {
   "Creativity": { color: "#db2777", long: "Creativity & Creation", icon: <FaPaintBrush /> },
   "Physical": { color: "#de5706", long: "Physical", icon: <FaHiking /> },
   "Challenge": { color: "#1e775a", long: "Challenge", icon: <FaTrophy /> },
-  "Puzzle": { color: "#dc2626", long: "Mystery & Puzzle", icon: <HiPuzzlePiece /> },
+  "Intellectual": { color: "#dc2626", long: "Mystery & Puzzle", icon: <HiPuzzlePiece /> },
   "Miscellaneous": { color: "#0f6b7e", long: "Miscellaneous", icon: <FaDiceD6 /> }
 }
 
@@ -59,72 +59,7 @@ const Footer = () => {
   );
 }
 
-let questData = {
-  current: {
-    "ac43ce08-a0c9-4dd7-b7b0-22789414e33f": {
-      tag: "Puzzle",
-      description: "Find an odd symbol or message written in graffiti.",
-      completed: true
-    },
-    "8ae2adae-caac-4a3b-867b-756a62257e01": {
-      tag: "Creativity",
-      description: "Write a short poem about something you encounter today.",
-      completed: false
-    },
-    "4be52f1c-65d4-458e-a2c8-c905b473eb45": {
-      tag: "Nature",
-      description: "Spot a patch of wildflowers growing somewhere unusual.",
-      completed: false
-    }
-  },
-  previous: {
-    "c07721d4-80a9-4543-91c9-766886bea783": {
-      tag: "Nature",
-      description: "Find a secluded place outdoors and just sit there for a while.",
-      completed: false
-    },
-    "e4e9e9ef-2a6d-4160-a260-e51002340ccd": {
-      tag: "Exploration",
-      description: "Ride an elevator to the highest floor it allows, then explore the hallway.",
-      completed: false
-    },
-    "652d200b-2a6d-4ade-9611-012fa2a99970": {
-      tag: "Puzzle",
-      description: "Search for a piece of graffiti that seems like a clue or hidden message.",
-      completed: false
-    },
-    "385004c0-9a97-4f8b-9377-cec393044cf7": {
-      tag: "Social",
-      description: "Compliment someone on something specific and unusual.",
-      completed: false
-    },
-    "1203d687-1ce9-46f3-8ec4-8b8fbf2dbe7d": {
-      tag: "Observation",
-      description: "Photograph a surface with three or more textures clashing.",
-      completed: false
-    },
-    "02a7beb9-7d70-4caf-b0ef-bd5e0364dae9": {
-      tag: "Creativity",
-      description: "Make a sketch of something in nature.",
-      completed: false
-    },
-    "fd76425c-cdee-4d13-98f6-6a218d4f640f": {
-      tag: "Physical",
-      description: "Climb onto a structure or platform and take a mental snapshot.",
-      completed: false
-    },
-    "127dc60a-0efd-459d-b72c-0f80e258ccfc": {
-      tag: "Miscellaneous",
-      description: "Watch something until it moves—flag, sign, paper, shadow.",
-      completed: false
-    },
-    "286025f4-1544-40bd-a19d-bfa98f1699d9": {
-      tag: "Challenge",
-      description: "Pretend you’re a character on a mission and perform a task in a place you’ve never been before.",
-      completed: false
-    }
-  }
-};
+let questData = {};
 
 function setQuestData(obj) {
   questData = obj;
