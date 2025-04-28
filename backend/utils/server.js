@@ -18,7 +18,7 @@ app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
+  windowMs: 60 * 60 * 1000,
   max: 60,
   message: "Too many requests, please try again later.",
   standardHeaders: true,
