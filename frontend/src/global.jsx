@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { PiCastleTurretFill } from "react-icons/pi";
@@ -37,12 +38,11 @@ const Footer = () => {
       <p>&copy; 2025 SideQuest, All Rights Reserved</p>
       <p>Remember: adventure responsibly and respect your surroundings</p>
       <p className="mb-0">
-        <a href="./" className="mt-0 text-decoration-none text-secondary" style={{ fontSize: "0.75rem" }}>Home</a>
+        <Link to="/" className="mt-0 text-decoration-none text-secondary" style={{ fontSize: "0.75rem" }}>Home</Link>
         { " | " }
-        <a href="./terms" className="mt-0 text-decoration-none text-secondary" style={{ fontSize: "0.75rem" }}>Terms of Use</a>
+        <Link to="/terms" className="mt-0 text-decoration-none text-secondary" style={{ fontSize: "0.75rem" }}>Terms of Use</Link>
         { " | " }
-        <a
-          href="./#"
+        <Link
           className="mt-0 text-decoration-none text-secondary"
           style={{ fontSize: "0.75rem" }}
           onClick={() => {
@@ -53,7 +53,7 @@ const Footer = () => {
           }}
         >
           Clear local data
-        </a>
+        </Link>
       </p>
     </div>
   );
