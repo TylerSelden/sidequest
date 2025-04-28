@@ -23,7 +23,7 @@ export default function App() {
     load();
   }, []);
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       {!loaded ? (
         <div className="position-absolute top-0 start-0 w-100 vh-100 overflow-hidden">
           <div className="position-absolute top-50 start-50 translate-middle">
