@@ -1,16 +1,22 @@
-const { uuid } = require("./misc.js");
+const { randomUUID } = require("crypto");
+const fs = require("fs");
+const path = require("path");
+const config = require("../secrets/config.json");
+
+const saveFile = path.join(__dirname, "../secrets", config.saveFile);
+const saveFileExists = fs.existsSync(saveFile);
 
 class Quest {
   constructor(data) {
     const { id, tag, description, status } = data || {};
-    this.id = id || uuid();
+    this.id = id || randomUUID();
     this.tag = tag || "Miscellaneous";
     this.description = description || "No description";
     this.status = status || "upcoming";
   }
 }
 
-let state = {
+let state = saveFileExists ? JSON.parse(fs.readFileSync(saveFile)) : {
   season: 0,
   seasons: [ "Placeholder" ],
   seasonName: "Placeholder",
@@ -18,6 +24,13 @@ let state = {
 };
 
 let questData = {};
+
+function save() {
+  const data = JSON.stringify(state, null, 2);
+  fs.writeFile(saveFile, data, err => {
+    if (err) console.error("Error saving state:", err);
+  });
+}
 
 function updateState(season) {
   if (season) state.season = season;
@@ -32,6 +45,8 @@ function updateState(season) {
     const quest = state.allQuests[state.season][id];
     if (questData[quest.status]) questData[quest.status][id] = quest;
   }
+
+  save();
 }
 updateState();
 

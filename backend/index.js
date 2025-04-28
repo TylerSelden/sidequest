@@ -1,11 +1,10 @@
-const fs = require("fs");
-const path = require("path");
+const { randomUUID } = require("crypto");
 const https = require("https");
 const cors = require("cors");
 const express = require("express");
 const config = require("./secrets/config.json");
 
-const { auth, checkExists, uuid } = require("./utils/misc.js");
+const { auth, checkExists } = require("./utils/misc.js");
 const { app, startServer } = require("./utils/server.js");
 let { state, Quest, questData, updateState, updateGame } = require("./utils/data.js");
 
@@ -48,11 +47,11 @@ app.put("/admin/season/:season", auth, (req, res) => {
   state.allQuests[season] = {};
   if (quests) {
     for (const quest of quests) {
-      quest.id = uuid();
+      quest.id = randomUUID();
       state.allQuests[season][quest.id] = new Quest(quest);
     }
   }
-  updateState(season);
+  updateState();
 
   res.json({ data: "Success" });
 });
@@ -90,7 +89,7 @@ app.put("/admin/quests/:season", auth, (req, res) => {
 
   state.allQuests[season] = {};
   for (const quest of quests) {
-    quest.id = uuid();
+    quest.id = randomUUID();
     state.allQuests[season][quest.id] = new Quest(quest);
   }
   updateState();
@@ -105,7 +104,7 @@ app.post("/admin/quests/:season", auth, (req, res) => {
   if (!state.seasons[season]) return res.status(404).json({ data: "Not Found" });
 
   for (const quest of quests) {
-    quest.id = uuid();
+    quest.id = randomUUID();
     state.allQuests[season][quest.id] = new Quest(quest);
   }
   updateState();

@@ -1,5 +1,8 @@
-const { createHash, randomUUID } = require("crypto");
+const fs = require("fs");
+const path = require("path");
+const { randomUUID } = require("crypto");
 const config = require("../secrets/config.json");
+const { saveFile, state } = require("./data.js");
 
 function auth(req, res, next) {
   if (req.data.key !== config.adminKey) return res.status(401).json({ data: "Unauthorized" });
@@ -15,9 +18,5 @@ function checkExists(res, data) {
   return true;
 }
 
-function uuid() {
-  return randomUUID();
-}
 
-
-module.exports = { auth, checkExists, uuid };
+module.exports = { auth, checkExists };
