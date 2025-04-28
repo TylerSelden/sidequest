@@ -55,6 +55,7 @@ const API = {
     postQuests:           (key, season, quests) => request("POST", `/admin/quests/${season}`, { key, quests }),
     deleteQuests:         (key, season, quests) => request("DELETE", `/admin/quests/${season}`, { key, quests }),
     adminGetQuestsSeason: (key, season) => request("GET", `/admin/quests/${season}`, { key }),
+    adminUpdateGame:      (key, season) => request("POST", `/admin/game/update`, { key }),
     adminGetQuests:       (key) => request("GET", "/admin/quests", { key }),
     getSeasons:           (key) => request("GET", "/admin/seasons", { key }),
   },
@@ -198,6 +199,13 @@ const API = {
           required: true
         }
       }
+    },
+    adminUpdateGame: {
+      type: "POST",
+      url: "/admin/game/update",
+      privileged: true,
+      description: "Run the game's update script early.",
+      params: {}
     },
     adminGetQuests: {
       type: "GET",

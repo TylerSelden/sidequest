@@ -21,7 +21,7 @@ let questData = {};
 
 function updateState(season) {
   if (season) state.season = season;
-  state.seasonName = state.seasons[season];
+  state.seasonName = state.seasons[state.season];
 
   // don't completely reassign the object, to prevent breaking references
   questData.upcoming = {};
@@ -35,4 +35,24 @@ function updateState(season) {
 }
 updateState();
 
-module.exports = { state, Quest, questData, updateState };
+function updateGame() {
+  // atttempt to move up a season if out of quests
+  if (Object.keys(questData.upcoming).length < 1 && state.seasons[state.season + 1]) updateState(state.season + 1);
+
+  // choose max of 3 quests from upcoming to current
+  const upcomingQuests = Object.keys(questData.upcoming);
+  const size = Math.min(3, upcomingQuests.length);
+  for (let i = 0; i < size; i++) {
+    const index = Math.floor(Math.random() * upcomingQuests.length);
+    const id = upcomingQuests[index];
+    state.allQuests[state.season][id].status = "current";
+    upcomingQuests.splice(index, 1);
+  }
+
+  // move current quests to previous
+  for (const id in questData.current) state.allQuests[state.season][id].status = "previous";
+
+  updateState();
+}
+
+module.exports = { state, Quest, questData, updateState, updateGame };

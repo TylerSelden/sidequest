@@ -7,7 +7,7 @@ const config = require("./secrets/config.json");
 
 const { auth, checkExists, uuid } = require("./utils/misc.js");
 const { app, startServer } = require("./utils/server.js");
-let { state, Quest, questData, updateState } = require("./utils/data.js");
+let { state, Quest, questData, updateState, updateGame } = require("./utils/data.js");
 
 
 /*
@@ -22,6 +22,8 @@ let { state, Quest, questData, updateState } = require("./utils/data.js");
   * POST   /admin/quests/:season     - Create or replace quests, keeping existing quests
   * DELETE /admin/quests/:season     - Delete quests by ID
   * GET    /admin/quests/:season     - Get all quests in season
+  *
+  * POST   /admin/game/update        - Update game
   * GET    /admin/quests             - Get all quests in all seasons
   * GET    /admin/seasons            - Get all seasons
   *
@@ -141,6 +143,11 @@ app.get("/admin/quests/:season", auth, (req, res) => {
   res.json({ data });
 });
 
+app.post("/admin/game/update", auth, (req, res) => {
+  updateGame();
+  res.json({ data: "Success" });
+});
+
 app.get("/admin/quests", auth, (req, res) => {
   const data = {};
   for (const season in state.allQuests) {
@@ -158,7 +165,6 @@ app.get("/admin/quests", auth, (req, res) => {
   res.json({ data });
 });
 
-// get seasons
 app.get("/admin/seasons", auth, (req, res) => {
   res.json({ data: state.seasons });
 });
