@@ -27,7 +27,7 @@ const tagData = {
   "Creativity": { color: "#db2777", long: "Creativity & Creation", icon: <FaPaintBrush /> },
   "Physical": { color: "#de5706", long: "Physical", icon: <FaHiking /> },
   "Challenge": { color: "#1e775a", long: "Challenge", icon: <FaTrophy /> },
-  "Intellectual": { color: "#dc2626", long: "Mystery & Puzzle", icon: <HiPuzzlePiece /> },
+  "Mental": { color: "#dc2626", long: "Mental & Intellectual", icon: <HiPuzzlePiece /> },
   "Miscellaneous": { color: "#0f6b7e", long: "Miscellaneous", icon: <FaDiceD6 /> }
 }
 
