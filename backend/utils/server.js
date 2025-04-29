@@ -44,7 +44,6 @@ app.param("season", (req, res, next) => {
 
 function startServer() {
   cron.schedule("0 0 * * 1-6", updateGame);
-  updateGame();
 
   https.createServer(ssl, app).listen(config.port, () => {
     console.log(`SideQuest REST API is running on port ${config.port}`);

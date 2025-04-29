@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/sidequest/static/css/main.42a8cafd.css",
-    "main.js": "/sidequest/static/js/main.2b352122.js",
+    "main.js": "/sidequest/static/js/main.64da9900.js",
     "index.html": "/sidequest/index.html"
   },
   "entrypoints": [
     "static/css/main.42a8cafd.css",
-    "static/js/main.2b352122.js"
+    "static/js/main.64da9900.js"
   ]
 }

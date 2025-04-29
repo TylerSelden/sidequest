@@ -15,8 +15,8 @@ export default function App() {
 
   useEffect(() => {
     async function load() {
-      const response = await API.remote.getQuests();
-      setQuestData(response);
+      const res = await API.remote.getQuests();
+      setQuestData(res);
 
       setLoaded(true);
     }

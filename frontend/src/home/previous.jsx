@@ -28,6 +28,7 @@ const TagSelector = ({ activeTag, setActiveTag }) => {
 
 const filteredList = (activeTag) => {
   return Object.entries(questData.previous)
+    .sort((a, b) => { return a[1].timestamp > b[1].timestamp ? -1 : 1 })
     .filter(([id, quest]) => activeTag === "All Quests" || quest.tag === activeTag);
 }
 
@@ -64,12 +65,13 @@ const Previous = () => {
         <div className="col-12 pt2 d-flex justify-content-center">
           <button
             className="btn btn-primary btn-md px-5"
-            style={{ display: (showCount < filteredList(activeTag).length) ? "block" : "none" }}
             onClick={() => {
+              if (showCount >= filteredList(activeTag).length) return setShowCount(6);
+              if (showCount >= 12) return setShowCount(filteredList(activeTag).length);
               setShowCount(showCount + 3);
             }}
           >
-            Show more
+            Show { showCount >= filteredList(activeTag).length ? "Less" : showCount >= 12 ? "All" : "More" }
           </button>
         </div>
       </div>

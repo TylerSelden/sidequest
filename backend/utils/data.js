@@ -9,11 +9,12 @@ const saveFileExists = fs.existsSync(saveFile);
 
 class Quest {
   constructor(data) {
-    const { id, tag, description, status } = data || {};
+    const { id, tag, description, status, timestamp } = data || {};
     this.id = id || randomUUID();
     this.tag = tag || "Miscellaneous";
     this.description = description || "No description";
     this.status = status || "upcoming";
+    this.timestamp = timestamp || 0;
   }
 }
 
@@ -66,8 +67,10 @@ function updateGame() {
   }
 
   // move current quests to previous
-  for (const id in questData.current) state.allQuests[state.season][id].status = "previous";
-  shuffle(questData.current);
+  for (const id in questData.current) {
+    state.allQuests[state.season][id].status = "previous";
+    state.allQuests[state.season][id].timestamp = Date.now();
+  }
 
   updateState();
 }
