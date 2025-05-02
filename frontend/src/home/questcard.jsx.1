@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
-import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 
 import API from "../api";
 import { tagData } from "../global";
@@ -20,14 +19,14 @@ const IconCircle = ({ tag }) => {
 const VoteButtons = ({ quest }) => {
   return (
     <div className="d-flex flex-grow-1 flex-center mb-3">
-      <div className="d-flex flex-column justify-content-center align-items-center gap-2 ms-1">
+      <div className="d-flex flex-column justify-content-center align-items-center gap-3 ms-1">
         <button
           title="Like"
           className="btn btn-dark text-secondary rounded-pill p-0 d-flex justify-content-center align-items-center"
           style={{ width: "22px", height: "22px", fontSize: "20px" }}
           onClick={() => API.local.setQuestLike(quest.id, true)}
         >
-          <FaCaretUp />
+          <BiLike />
         </button>
         <button
           title="Dislike"
@@ -35,7 +34,7 @@ const VoteButtons = ({ quest }) => {
           style={{ width: "22px", height: "22px", fontSize: "20px" }}
           onClick={() => API.local.setQuestLike(quest.id, false)}
         >
-          <FaCaretDown />
+          <BiDislike />
         </button>
       </div>
     </div>

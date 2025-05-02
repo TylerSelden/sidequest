@@ -62,18 +62,20 @@ const Previous = () => {
       <div className="mt-0 row row-cols-3 row-cols-md-1 g-3 justify-content-center">
         <PreviousQuestCards activeTag={ activeTag } showCount={ showCount } />
 
-        <div className="col-12 pt2 d-flex justify-content-center">
-          <button
-            className="btn btn-primary btn-md px-5"
-            onClick={() => {
-              if (showCount >= filteredList(activeTag).length) return setShowCount(6);
-              if (showCount >= 12) return setShowCount(filteredList(activeTag).length);
-              setShowCount(showCount + 3);
-            }}
-          >
-            Show { showCount >= filteredList(activeTag).length ? "Less" : showCount >= 12 ? "All" : "More" }
-          </button>
-        </div>
+        { filteredList(activeTag).length === 0 || showCount >= filteredList(activeTag).length ? null : (
+          <div className="col-12 pt2 d-flex justify-content-center">
+            <button
+              className="btn btn-primary btn-md px-5"
+              style={{ display: showCount > 12 ? "none" : "block" }}
+              onClick={() => {
+                if (showCount >= 12) return setShowCount(filteredList(activeTag).length);
+                setShowCount(showCount + 3);
+              }}
+            >
+              Show { showCount >= 12 ? "All" : "More" }
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
