@@ -35,7 +35,11 @@ const API = {
   local: {
     setQuestCompletion: (id, completed) => {
       let arr = JSON.parse(localStorage.getItem("sidequest") || "[]");
-      arr.push(id);
+      if (completed) {
+        arr.push(id);
+      } else {
+        arr = arr.filter((questId) => questId !== id);
+      }
       localStorage.setItem("sidequest", JSON.stringify(arr));
     },
     questsCompleted: JSON.parse(localStorage.getItem("sidequest") || "[]"),
