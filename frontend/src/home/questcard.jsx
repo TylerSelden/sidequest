@@ -19,23 +19,23 @@ const IconCircle = ({ tag }) => {
 
 const VoteButtons = ({ quest }) => {
   return (
-    <div className="d-flex flex-grow-1 flex-center mb-3">
-      <div className="d-flex flex-column justify-content-center align-items-center gap-2 ms-1">
+    <div className="d-flex justify-content-center flex-grow-1">
+      <div className="d-flex justify-content-center gap-1">
         <button
           title="Like"
           className="btn btn-dark text-secondary rounded-pill p-0 d-flex justify-content-center align-items-center"
-          style={{ width: "22px", height: "22px", fontSize: "20px" }}
-          onClick={() => API.local.setQuestLike(quest.id, true)}
+          style={{ width: "28px", height: "28px", fontSize: "20px" }}
+          onClick={() => alert("Yeah I'll set this part up later.")}
         >
-          <FaCaretUp />
+          <BiLike />
         </button>
         <button
           title="Dislike"
           className="btn btn-dark text-secondary rounded-pill p-0 d-flex justify-content-center align-items-center"
-          style={{ width: "22px", height: "22px", fontSize: "20px" }}
-          onClick={() => API.local.setQuestLike(quest.id, false)}
+          style={{ width: "28px", height: "28px", fontSize: "20px" }}
+          onClick={() => alert("Yeah I'll set this part up later.")}
         >
-          <FaCaretDown />
+          <BiDislike />
         </button>
       </div>
     </div>
@@ -107,13 +107,16 @@ const QuestCard = ({ quest }) => {
           <IconCircle tag={ tag } />
           <div className="d-flex flex-column">
             <h3 className="mt-2 h5 fw-bold mb-1">{ tag }</h3>
-            <p className="fs-1 text-secondary hyphen-wrap">{ description }</p>
+            <p className="fs-1 text-secondary hyphen-wrap mb-1">{ description }</p>
           </div>
         </div>
 
-        <div className="d-flex justify-content-between align-items-center">
-          <p className="text-secondary fs-1 mb-0">{ long }</p>
-          <FinishedButton quest={quest} />
+        <div className="d-flex justify-content-between align-items-end">
+          <p className="text-secondary fs-1 mb-1">{ long }</p>
+          <div className="d-flex flex-column gap-2 justify-content-center">
+            <VoteButtons quest={quest} />
+            <FinishedButton quest={quest} />
+          </div>
         </div>
       </div>
     </div>
