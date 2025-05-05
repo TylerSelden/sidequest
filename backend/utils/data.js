@@ -9,12 +9,14 @@ const saveFileExists = fs.existsSync(saveFile);
 
 class Quest {
   constructor(data) {
-    const { id, tag, description, status, timestamp } = data || {};
+    const { id, tag, description, status, timestamp, likes, finishers } = data || {};
     this.id = id || randomUUID();
     this.tag = tag || "Miscellaneous";
     this.description = description || "No description";
     this.status = status || "upcoming";
     this.timestamp = timestamp || 0;
+    this.likes = likes || 0;
+    this.finishers = finishers || 0;
   }
 }
 

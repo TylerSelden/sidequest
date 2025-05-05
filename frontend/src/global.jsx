@@ -63,9 +63,12 @@ let questData = {};
 
 function setQuestData(obj) {
   questData = obj;
-  for (const id of API.local.questsCompleted) {
+  const flattened = { ...questData.current, ...questData.previous };
+
+  for (const id in flattened) {
     let _obj = (questData.current[id] || questData.previous[id]);
-    if (_obj) _obj.completed = true;
+    if (API.local.questsCompleted.includes(id)) _obj.completed = true;
+    _obj.liked = (API.local.likes[id] === undefined) ? null : API.local.likes[id];
   }
 }
 

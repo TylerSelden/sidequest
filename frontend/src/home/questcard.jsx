@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
 import { FaCaretUp, FaCaretDown } from "react-icons/fa";
@@ -18,6 +18,14 @@ const IconCircle = ({ tag }) => {
 }
 
 const VoteButtons = ({ quest }) => {
+  const [liked, setLiked] = useState(quest.liked);
+  const prevLiked = useRef(liked);
+
+  useEffect(() => {
+    API.remote.postLike(quest.id, liked - prevLiked.current);
+    prevLiked.current = liked;
+  }, [liked]);
+
   return (
     <div className="d-flex justify-content-center flex-grow-1">
       <div className="d-flex justify-content-center gap-1">
@@ -25,17 +33,33 @@ const VoteButtons = ({ quest }) => {
           title="Like"
           className="btn btn-dark text-secondary rounded-pill p-0 d-flex justify-content-center align-items-center"
           style={{ width: "28px", height: "28px", fontSize: "20px" }}
-          onClick={() => alert("Yeah I'll set this part up later.")}
+          onClick={() => {
+            if (liked > 0) {
+              API.local.removeLike(quest.id);
+              setLiked(0);
+            } else {
+              API.local.setLike(quest.id, 1);
+              setLiked(1);
+            }
+          }}
         >
-          <BiLike />
+          { liked > 0 ? <BiSolidLike /> : <BiLike /> }
         </button>
         <button
           title="Dislike"
           className="btn btn-dark text-secondary rounded-pill p-0 d-flex justify-content-center align-items-center"
           style={{ width: "28px", height: "28px", fontSize: "20px" }}
-          onClick={() => alert("Yeah I'll set this part up later.")}
+          onClick={() => {
+            if (liked < 0) {
+              API.local.removeLike(quest.id);
+              setLiked(0);
+            } else {
+              API.local.setLike(quest.id, -1);
+              setLiked(-1);
+            }
+          }}
         >
-          <BiDislike />
+          { liked < 0 ? <BiSolidDislike /> : <BiDislike /> }
         </button>
       </div>
     </div>
@@ -53,6 +77,7 @@ const FinishedButton = ({ quest }) => {
     holdTimeout = setTimeout(() => {
       API.local.setQuestCompletion(quest.id, false);
       setCompleted(false);
+      API.remote.postCompleted(quest.id, false);
       if (!e.type.startsWith("touch")) setDisableClick(true);
     }, 3000);
   }
@@ -70,6 +95,7 @@ const FinishedButton = ({ quest }) => {
         if (disableClick) return setDisableClick(false);
         API.local.setQuestCompletion(quest.id, true);
         setCompleted(true);
+        API.remote.postCompleted(quest.id, true);
       }}
     >
       Finish

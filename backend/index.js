@@ -12,11 +12,13 @@ let { state, Quest, questData, updateState, updateGame } = require("./utils/data
 /*
   *
   * GET    /quests                   - Get all quests in all seasons
-
+  * POST   /like/:quest              - Like or dislike a quest
+  * POST   /completed/:quest         - Complete or uncomplete a quest
+  *
   * PUT    /admin/season/:season     - Create new season, overwrite if exists
   * PATCH  /admin/season/:season     - Set current season
   * DELETE /admin/season/:season     - Delete season
-
+  *
   * PUT    /admin/quests/:season     - Completely overwrite all quests in existing season
   * POST   /admin/quests/:season     - Create or replace quests, keeping existing quests
   * DELETE /admin/quests/:season     - Delete quests by ID
@@ -36,6 +38,29 @@ app.get("/quests", (req, res) => {
   res.json({ data: cleanQuestData });
 });
 
+app.post("/like/:quest", (req, res) => {
+  const { quest } = req.params;
+  const { change } = req.body;
+  if (!checkExists(res, [quest, change])) return;
+  if (!state.allQuests[state.season][quest]) return res.status(404).json({ data: "Not Found" });
+
+  state.allQuests[state.season][quest].likes += Math.max(-2, Math.min(2, change));
+  updateState();
+
+  res.json({ data: "Success" });
+});
+
+app.post("/completed/:quest", (req, res) => {
+  const { quest } = req.params;
+  const { completed } = req.body;
+  if (!checkExists(res, [quest, completed])) return;
+  if (!state.allQuests[state.season][quest]) return res.status(404).json({ data: "Not Found" });
+
+  state.allQuests[state.season][quest].completed += completed ? 1 : -1;
+  updateState();
+
+  res.json({ data: "Success" });
+});
 
 
 app.put("/admin/season/:season", auth, (req, res) => {
