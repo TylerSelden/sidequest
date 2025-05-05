@@ -7,7 +7,7 @@ const Header = () => {
       <h1 className="mb-0 text-center title-font neon fs-9">
         <span className="title-font text-primary">Admin</span> Panel
       </h1>
-      <p className="text-center"><i className="text-secondary fs-2">API Endpoint Manager</i></p>
+      <p className="text-center"><i className="text-secondary mx-2 fs-2">API Endpoint Manager</i></p>
     </div>
   );
 }
