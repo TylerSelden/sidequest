@@ -23,6 +23,11 @@ $fs-sizes: (
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=VT323&display=swap');
 
+@font-face {
+  font-family: 'Sitelen';
+  src: url('../../public/sitelen-pona.ttf') format('opentype');
+}
+
 @each $key, $size in $fs-sizes {
   .fs-#{$key} {
     font-size: $size !important;
@@ -135,4 +140,9 @@ body {
 
 .spacer {
   border-top: 1px solid rgb(51, 65, 85) !important;
+}
+
+.sitelen-pona {
+  font-family: 'Sitelen', sans-serif;
+  font-size: 2rem;
 }

@@ -15,6 +15,7 @@ export default function App() {
 
   useEffect(() => {
     async function load() {
+      API.local.initialize();
       const res = await API.remote.getQuests();
       setQuestData(res);
 

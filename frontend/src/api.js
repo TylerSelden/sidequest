@@ -16,7 +16,6 @@ async function request(method, url, body) {
       options.body = body;
     }
   }
-  console.log(url)
 
 
   const res = await fetch(`${baseURL}${url}`, options);
@@ -33,19 +32,50 @@ async function request(method, url, body) {
 
 const API = {
   local: {
+    ver: 1,
+    upgrade: [
+      null,
+      () => {
+        const completed = API.local.get();
+        localStorage.setItem("sidequest", API.local.defaultValue);
+        API.local.set("completed", completed);
+      }
+    ],
+    get: (key) => {
+      const val = JSON.parse(localStorage.getItem("sidequest") || API.local.defaultValue);
+      if (key) return val[key];
+      return val;
+    },
+    set: (key, val) => {
+      let obj = API.local.get();
+      obj[key] = val;
+      localStorage.setItem("sidequest", JSON.stringify(obj));
+    },
     setQuestCompletion: (id, completed) => {
-      let arr = JSON.parse(localStorage.getItem("sidequest") || "[]");
+      let arr = API.local.get("completed");
       if (completed) {
         arr.push(id);
       } else {
         arr = arr.filter((questId) => questId !== id);
       }
-      localStorage.setItem("sidequest", JSON.stringify(arr));
+      API.local.set("completed", arr);
     },
-    questsCompleted: JSON.parse(localStorage.getItem("sidequest") || "[]"),
-    setAdminKey: (key) => localStorage.setItem("sidequestKey", key),
-    adminKey: localStorage.getItem("sidequestKey") || "",
-    points: JSON.parse(localStorage.getItem("sidequest") || "[]").length * 10
+    setAdminKey: (key) => API.local.set("adminKey", key),
+
+    initialize: () => {
+      API.local.defaultValue = JSON.stringify({
+        ver: API.local.ver,
+        completed: [],
+        adminKey: ""
+      });
+
+      const currentVer = API.local.get("ver") || 0;
+      for (let i = currentVer + 1; i <= API.local.ver; i++) API.local.upgrade[currentVer + 1]();
+
+      const val = API.local.get();
+      API.local.questsCompleted = val.completed;
+      API.local.adminKey = val.adminKey;
+    }
   },
 
   remote: {

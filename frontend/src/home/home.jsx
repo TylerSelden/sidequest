@@ -14,7 +14,7 @@ const Home = () => {
         <Current />
         <Previous />
       </div>
-        <Footer />
+      <Footer />
     </>
   );
 }
