@@ -9,14 +9,16 @@ const saveFileExists = fs.existsSync(saveFile);
 
 class Quest {
   constructor(data) {
-    const { id, tag, description, status, timestamp, likes, finishers } = data || {};
+    const { id, tag, description, status, timestamp, likes, finishes } = data || {};
     this.id = id || randomUUID();
     this.tag = tag || "Miscellaneous";
     this.description = description || "No description";
     this.status = status || "upcoming";
     this.timestamp = timestamp || 0;
-    this.likes = likes || 0;
-    this.finishers = finishers || 0;
+    this.secrets = {
+      likes: likes || 0,
+      finishes: finishes || 0
+    };
   }
 }
 
@@ -47,7 +49,8 @@ function updateState(season) {
 
   for (const id in state.allQuests[state.season]) {
     const quest = state.allQuests[state.season][id];
-    if (questData[quest.status]) questData[quest.status][id] = quest;
+    const { secrets, ...cleanQuest } = quest;
+    if (questData[quest.status]) questData[quest.status][id] = cleanQuest;
   }
 
   save();

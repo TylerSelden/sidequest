@@ -44,7 +44,7 @@ app.post("/like/:quest", (req, res) => {
   if (!checkExists(res, [quest, change])) return;
   if (!state.allQuests[state.season][quest]) return res.status(404).json({ data: "Not Found" });
 
-  state.allQuests[state.season][quest].likes += Math.max(-2, Math.min(2, change));
+  state.allQuests[state.season][quest].secrets.likes += Math.max(-2, Math.min(2, change));
   updateState();
 
   res.json({ data: "Success" });
@@ -56,7 +56,7 @@ app.post("/completed/:quest", (req, res) => {
   if (!checkExists(res, [quest, completed])) return;
   if (!state.allQuests[state.season][quest]) return res.status(404).json({ data: "Not Found" });
 
-  state.allQuests[state.season][quest].completed += completed ? 1 : -1;
+  state.allQuests[state.season][quest].secrets.finishes += completed ? 1 : -1;
   updateState();
 
   res.json({ data: "Success" });
