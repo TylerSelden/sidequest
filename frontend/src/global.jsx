@@ -63,7 +63,6 @@ let questData = {};
 
 function setQuestData(obj) {
   questData = obj;
-  console.log(obj);
   const flattened = { ...questData.current, ...questData.previous };
 
   for (const id in flattened) {

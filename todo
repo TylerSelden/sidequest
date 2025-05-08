@@ -1,6 +1,7 @@
+- A general server status panel in admin (with analytics, progress, etc)
+- About page
 - A point counter
 - A better way to tell the user what season it is
 - TOKI PONAAA
 - Monthly quests??
-- A general server status panel in admin (with analytics, progress, etc)
 - Consolidate similar components (e.g. headers)
