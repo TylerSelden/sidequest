@@ -32,8 +32,7 @@ let { state, Quest, questData, updateState, updateGame } = require("./utils/data
 
 app.get("/quests", (req, res) => {
   const { upcoming, ...cleanQuestData } = questData;
-  cleanQuestData.season = state.season;
-  cleanQuestData.seasonName = state.seasonName;
+  cleanQuestData.season = state.seasons[state.season];
 
   res.json({ data: cleanQuestData });
 });
@@ -65,10 +64,14 @@ app.post("/completed/:quest", (req, res) => {
 
 app.put("/admin/season/:season", auth, (req, res) => {
   const { season } = req.params;
-  const { quests, seasonName } = req.body;
-  if (!checkExists(res, [season, seasonName])) return;
+  const { quests, seasonName, quote } = req.body;
+  if (!checkExists(res, [season, seasonName, quote])) return;
 
-  state.seasons[season] = seasonName;
+  state.seasons[season] = {
+    index: season,
+    name: seasonName,
+    quote: quote
+  };
   state.allQuests[season] = {};
   if (quests) {
     shuffle(quests);

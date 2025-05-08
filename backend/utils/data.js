@@ -24,8 +24,13 @@ class Quest {
 
 let state = saveFileExists ? JSON.parse(fs.readFileSync(saveFile)) : {
   season: 0,
-  seasons: [ "Placeholder" ],
-  seasonName: "Placeholder",
+  seasons: [
+    {
+      index: 0,
+      name: "Placeholder",
+      quote: "Such is the life of an adventurer."
+    }
+  ],
   allQuests: [{}]
 };
 
@@ -40,7 +45,6 @@ function save() {
 
 function updateState(season) {
   if (season) state.season = season;
-  state.seasonName = state.seasons[state.season];
 
   // don't completely reassign the object, to prevent breaking references
   questData.upcoming = {};

@@ -1,8 +1,6 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import { questData } from "../global";
-
 const Header = () => {
   return (
     <div className="mt-4">

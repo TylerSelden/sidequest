@@ -34,7 +34,7 @@ const tagData = {
 const Footer = () => {
   return (
     <div className="mt-5 text-secondary text-center py-4 px-5" style={{ fontSize: "0.8rem", borderTop: "1px solid #334155" }}>
-      <p className="fs-2 mb-4"><strong>Season { questData.season }:</strong> { questData.seasonName }</p>
+      <p className="fs-2 mb-4"><strong>Season { questData.season.index }:</strong> { questData.season.name }</p>
       <p>&copy; 2025 SideQuest, All Rights Reserved</p>
       <p>Remember: adventure responsibly and respect your surroundings</p>
       <p className="mb-0">
@@ -63,6 +63,7 @@ let questData = {};
 
 function setQuestData(obj) {
   questData = obj;
+  console.log(obj);
   const flattened = { ...questData.current, ...questData.previous };
 
   for (const id in flattened) {
