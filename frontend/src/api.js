@@ -85,7 +85,7 @@ const API = {
       });
 
       const currentVer = API.local.get("ver") || 0;
-      for (let i = currentVer + 1; i <= API.local.ver; i++) API.local.upgrade[currentVer + 1]();
+      for (let i = currentVer + 1; i <= API.local.ver; i++) API.local.upgrade[i]();
       API.local.set("ver", API.local.ver);
 
       const val = API.local.get();

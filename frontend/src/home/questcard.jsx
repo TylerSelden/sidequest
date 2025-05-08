@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BiDislike, BiLike, BiSolidDislike, BiSolidLike } from "react-icons/bi";
-import { FaCaretUp, FaCaretDown } from "react-icons/fa";
 
 import API from "../api";
 import { tagData } from "../global";
@@ -24,7 +23,7 @@ const VoteButtons = ({ quest }) => {
   useEffect(() => {
     API.remote.postLike(quest.id, liked - prevLiked.current);
     prevLiked.current = liked;
-  }, [liked]);
+  }, [liked, quest.id]);
 
   return (
     <div className="d-flex justify-content-center flex-grow-1">
@@ -72,7 +71,7 @@ const FinishedButton = ({ quest }) => {
 
   let holdTimeout;
   const handleHoldStart = (e) => {
-    e.target.innerText = "Undo";
+    e.target.innerText = "Hold to Undo";
     e.target.classList.add("undo");
     holdTimeout = setTimeout(() => {
       API.local.setQuestCompletion(quest.id, false);
@@ -105,6 +104,7 @@ const FinishedButton = ({ quest }) => {
       className="btn fake-disabled rounded-pill px-3 btn-sm mb-0"
       onMouseDown={handleHoldStart}
       onMouseUp={handleHoldEnd}
+      onMouseLeave={handleHoldEnd}
       onTouchStart={handleHoldStart}
       onTouchEnd={handleHoldEnd}
     >

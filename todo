@@ -1,5 +1,7 @@
 - A point counter
+- Add the quote to the season metadata
 - A general server status panel in admin (with analytics, progress, etc)
 - TOKI PONAAA
-- fix buttons
 - A better way to tell the user what season it is
+- Monthly quests??
+- Consolidate similar components (e.g. headers)
