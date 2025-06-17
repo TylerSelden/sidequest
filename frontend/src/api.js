@@ -100,7 +100,7 @@ const API = {
     postLike:             (quest, change) => request("POST", `/like/${quest}`, { change }),
     postCompleted:        (quest, completed) => request("POST", `/completed/${quest}`, { completed }),
 
-    putSeason:            (key, season, quests, seasonName) => request("PUT", `/admin/season/${season}`, { key, quests, seasonName }),
+    putSeason:            (key, season, quests, seasonName, quote) => request("PUT", `/admin/season/${season}`, { key, quests, seasonName, quote }),
     patchSeason:          (key, season) => request("PATCH", `/admin/season/${season}`, { key }),
     deleteSeason:         (key, season) => request("DELETE", `/admin/season/${season}`, { key }),
 
@@ -186,6 +186,12 @@ const API = {
           formal: "seasonName",
           type: "string",
           description: "The name of the season",
+          required: true
+        },
+        "Quote": {
+          formal: "quote",
+          type: "string",
+          description: "A quote to represent the season",
           required: true
         }
       }

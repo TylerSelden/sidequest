@@ -43,6 +43,12 @@ function save() {
   });
 }
 
+['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach(signal => process.on(signal, () => {
+  console.log(`Received ${signal}. Saving state...`);
+  save();
+  process.exit();
+}));
+
 function updateState(season) {
   if (season) state.season = season;
 
